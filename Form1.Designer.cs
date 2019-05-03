@@ -50,6 +50,7 @@
             this.destCheckBox = new System.Windows.Forms.CheckBox();
             this.dijkstraButton = new System.Windows.Forms.Button();
             this.edgeDeleteCheckBox = new System.Windows.Forms.CheckBox();
+            this.gráfTisztázásaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.menuSav.SuspendLayout();
             this.SuspendLayout();
@@ -154,6 +155,7 @@
             // 
             this.fájlToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.képernyőTörléseToolStripMenuItem,
+            this.gráfTisztázásaToolStripMenuItem,
             this.gráfBetöltéseToolStripMenuItem,
             this.kilépésToolStripMenuItem1,
             this.mátrixMegjelenítésToolStripMenuItem});
@@ -271,6 +273,13 @@
             this.edgeDeleteCheckBox.UseVisualStyleBackColor = true;
             this.edgeDeleteCheckBox.CheckedChanged += new System.EventHandler(this.edgeDeleteCheckBox_CheckedChanged);
             // 
+            // gráfTisztázásaToolStripMenuItem
+            // 
+            this.gráfTisztázásaToolStripMenuItem.Name = "gráfTisztázásaToolStripMenuItem";
+            this.gráfTisztázásaToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.gráfTisztázásaToolStripMenuItem.Text = "Gráf tisztázása";
+            this.gráfTisztázásaToolStripMenuItem.Click += new System.EventHandler(this.gráfTisztázásaToolStripMenuItem_Click);
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -328,6 +337,7 @@
         private System.Windows.Forms.ToolStripMenuItem képernyőTörléseToolStripMenuItem;
         private System.Windows.Forms.Button dijkstraButton;
         private System.Windows.Forms.CheckBox edgeDeleteCheckBox;
+        private System.Windows.Forms.ToolStripMenuItem gráfTisztázásaToolStripMenuItem;
     }
 }
 

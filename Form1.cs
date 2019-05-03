@@ -16,8 +16,6 @@ namespace CASA
         Graphics graphics;
         Graph graph = new Graph();
         List<Point> vertexPufferToDraw = new List<Point>();
-        List<Point> vertexPufferToDelete = new List<Point>();
-        List<Point> shortestPath = new List<Point>();
 
         Pen vertexPen = new Pen(Color.Black, 2);
         Pen edgePen = new Pen(Color.Blue, 2);
@@ -91,16 +89,16 @@ namespace CASA
                 {
                     resultPoint = vertices[closestPoint(p)];
 
-                    if (vertexPufferToDelete.Count == 0)
+                    if (vertexPufferToDraw.Count == 0)
                     {
-                        vertexPufferToDelete.Add(resultPoint);
+                        vertexPufferToDraw.Add(resultPoint);
                     }
                     else
                     {
-                        graph.deleteConnection(vertexPufferToDelete.First(), resultPoint);
-                        vertexPufferToDelete.Add(resultPoint);
+                        graph.deleteConnection(vertexPufferToDraw.First(), resultPoint);
+                        vertexPufferToDraw.Add(resultPoint);
                         refreshGraphics();
-                        vertexPufferToDelete.Clear();
+                        vertexPufferToDraw.Clear();
                     }
                 }else
                 {
@@ -165,7 +163,7 @@ namespace CASA
                 Point firstPoint = vertexToDraw[e.X];
                 Point secondPoint = vertexToDraw[e.Y];
 
-                if(shortestPath.Contains(firstPoint) && shortestPath.Contains(secondPoint))
+                if(graph.shortestPathToColor.Contains(firstPoint) && graph.shortestPathToColor.Contains(secondPoint))
                 {
                     edgePen.Color = Color.Green;
                 }else
@@ -175,17 +173,16 @@ namespace CASA
                 graphics.DrawLine(edgePen, firstPoint, secondPoint);
             }
 
-            foreach(var e in enabledEdges)
+            try
             {
-                edgePen.Color = Color.Red;
-
-                try
+                foreach (var e in enabledEdges)
                 {
-                    graphics.DrawLine(edgePen, vertexPufferToDelete[e.X], vertexPufferToDelete[e.Y]);
-                }catch(ArgumentOutOfRangeException ex)
-                {
-                    Console.WriteLine("Nincs él, amit törölni lehetne.");
+                    edgePen.Color = Color.Red;
+                    graphics.DrawLine(edgePen, vertexToDraw[e.X], vertexToDraw[e.Y]);
                 }
+            }catch(Exception ex)
+            {
+                Console.WriteLine("Nincs törlendő él!");
             }
 
         }
@@ -271,8 +268,7 @@ namespace CASA
 
         private void dijkstraButton_Click(object sender, EventArgs e)
         {
-            shortestPath = new List<Point>();
-            shortestPath = graph.Dijkstra();
+            graph.Dijkstra();
 
             refreshGraphics();
         }
@@ -317,6 +313,14 @@ namespace CASA
             }
 
             return resultIndex;
+        }
+
+        private void gráfTisztázásaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.startIndex = -1;
+            graph.destIndex = -1;
+            graph.clearDeletedEdges();
+            refreshGraphics();
         }
     }
 }

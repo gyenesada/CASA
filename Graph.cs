@@ -144,16 +144,34 @@ namespace CASA
             startIndex = -1;
             destIndex = -1;
             shortestPathToDestination = new StringBuilder();
+            shortestPathToColor = new List<Point>();
         }
-        
+
+        //public void clearShortestPath()
+        //{
+        //    shortestPathToColor.Clear();
+        //}
+
+        public void clearDeletedEdges()
+        {
+            List<Point> edges = utMatrix.getEnabledValues();
+
+            foreach(var v in edges)
+            {
+                utMatrix[v] = 1;
+            }
+        }
+
 
         #region Dijkstra
-        
-        public List<Point> Dijkstra()
+
+        public void Dijkstra()
         {
             int vertexNumber = Vertices.Count();
             int[] distances = new int[vertexNumber];
             bool[] shortestPathBool = new bool[vertexNumber];
+            shortestPathToColor = new List<Point>();
+            pathIndex = new List<int>();
             int[] path = new int[vertexNumber];
 
             for (int i = 0; i < vertexNumber; ++i)
@@ -173,14 +191,12 @@ namespace CASA
 
                 for(int v = 0; v < vertexNumber; ++v)
                 {
-                    if(!shortestPathBool[v] &&  utMatrix[new Point(u,v)] != -1 && distances[u] != int.MaxValue && distances[u] + 1 < distances[v])
+                    if(!shortestPathBool[v] &&  utMatrix[new Point(u,v)] != -1 &&  utMatrix[new Point(u,v)] != 0 && distances[u] != int.MaxValue && distances[u] + 1 < distances[v])
                     {
                         distances[v] = distances[u] + 1;
                         path[v] = u; //melyik csúcsból indult ki
                     }
                 }
-
-
             }
 
             Console.WriteLine("Vertex    Distance from source       Last vertex");
@@ -188,13 +204,19 @@ namespace CASA
             for (int i = 0; i < vertexNumber; ++i)
                 Console.WriteLine("{0}\t  {1}\t   {2}", i, distances[i], path[i]);
 
-            int index = destIndex;
-            pathIndex.Add(index);
-            while (index != startIndex)
+            try
             {
-                index = path[index];
-                shortestPathToDestination.Append(index + "-");
+                int index = destIndex;
                 pathIndex.Add(index);
+                while (index != startIndex)
+                {
+                    index = path[index];
+                    shortestPathToDestination.Append(index + "-");
+                    pathIndex.Add(index);
+                }
+            }catch(IndexOutOfRangeException ex)
+            {
+                MessageBox.Show("Nem található közvetlen út!");
             }
 
             Console.WriteLine(shortestPathToDestination.ToString());
@@ -204,8 +226,7 @@ namespace CASA
                 shortestPathToColor.Add(Vertices[pathIndex[i]]);
                 shortestPathToColor.Add(Vertices[pathIndex[i + 1]]);
             }
-
-            return shortestPathToColor;
+            
         }
 
         public int shortestDistance(int[] distance, bool[] shortestPath, int vertexNum)
