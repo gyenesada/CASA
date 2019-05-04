@@ -50,6 +50,7 @@
             this.shortestPathInfosLabel = new System.Windows.Forms.Label();
             this.arbButton = new System.Windows.Forms.Button();
             this.arborescenceLabel = new System.Windows.Forms.Label();
+            this.deleteEdgeCasaCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.menuSav.SuspendLayout();
             this.SuspendLayout();
@@ -235,6 +236,7 @@
             this.edgeDeleteCheckBox.TabIndex = 16;
             this.edgeDeleteCheckBox.Text = "Él törlése";
             this.edgeDeleteCheckBox.UseVisualStyleBackColor = true;
+            this.edgeDeleteCheckBox.Visible = false;
             this.edgeDeleteCheckBox.CheckedChanged += new System.EventHandler(this.edgeDeleteCheckBox_CheckedChanged);
             // 
             // shortestPathInfosLabel
@@ -265,11 +267,24 @@
             this.arborescenceLabel.TabIndex = 19;
             this.arborescenceLabel.Text = "\r\n";
             // 
+            // deleteEdgeCasaCheckBox
+            // 
+            this.deleteEdgeCasaCheckBox.AutoSize = true;
+            this.deleteEdgeCasaCheckBox.Location = new System.Drawing.Point(620, 424);
+            this.deleteEdgeCasaCheckBox.Name = "deleteEdgeCasaCheckBox";
+            this.deleteEdgeCasaCheckBox.Size = new System.Drawing.Size(106, 17);
+            this.deleteEdgeCasaCheckBox.TabIndex = 20;
+            this.deleteEdgeCasaCheckBox.Text = "Él törlése (CASA)";
+            this.deleteEdgeCasaCheckBox.UseVisualStyleBackColor = true;
+            this.deleteEdgeCasaCheckBox.Visible = false;
+            this.deleteEdgeCasaCheckBox.CheckedChanged += new System.EventHandler(this.deleteEdgeCasaCheckBox_CheckedChanged);
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(858, 515);
+            this.Controls.Add(this.deleteEdgeCasaCheckBox);
             this.Controls.Add(this.arborescenceLabel);
             this.Controls.Add(this.arbButton);
             this.Controls.Add(this.shortestPathInfosLabel);
@@ -321,6 +336,7 @@
         private System.Windows.Forms.Label shortestPathInfosLabel;
         private System.Windows.Forms.Button arbButton;
         private System.Windows.Forms.Label arborescenceLabel;
+        private System.Windows.Forms.CheckBox deleteEdgeCasaCheckBox;
     }
 }
 

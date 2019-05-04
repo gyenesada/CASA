@@ -16,7 +16,8 @@ namespace CASA
         Graphics graphics;
         Graph graph;
         List<Point> vertexPufferToDraw = new List<Point>();
-        bool needrefresh = false;
+        bool needrefreshDijkstra = false;
+        bool needrefreshCASA = false;
         bool firstDijkstra = false;
         bool isCasaActive = false;
 
@@ -60,8 +61,13 @@ namespace CASA
             graph.deleteGraph();
             isCasaActive = false;
             shortestPathInfosLabel.Text = "";
-        }
+            arborescenceLabel.Text = "";
 
+            startCheckBox.Checked = false;
+            destCheckBox.Checked = false;
+            CasaCheckBox.Checked = false;
+            squareOneCheckBox.Checked = false;
+        }
 
         #region Rajzoló
         private void canvas_Click(object sender, EventArgs e)
@@ -91,7 +97,7 @@ namespace CASA
             }
             else if (me.Button == MouseButtons.Right)
             {
-                if (edgeDeleteCheckBox.Checked)
+                if (edgeDeleteCheckBox.Checked || deleteEdgeCasaCheckBox.Checked)
                 {
                     resultPoint = vertices[closestPoint(p)];
 
@@ -104,12 +110,12 @@ namespace CASA
                         graph.deleteConnection(vertexPufferToDraw.First(), resultPoint);
                         vertexPufferToDraw.Add(resultPoint);
                         refreshGraphics();
-                        if (needrefresh)
+                        if (needrefreshDijkstra)
                         {
                             graph.Dijkstra();
                             refreshGraphics();
                             refreshLabel();
-                            needrefresh = false;
+                            needrefreshDijkstra = false;
                         }
                         vertexPufferToDraw.Clear();
                     }
@@ -206,7 +212,7 @@ namespace CASA
                     if (firstDijkstra)
                     {
                         graph.Dijkstra();
-                        needrefresh = true;
+                        needrefreshDijkstra = true;
                     }
                 }
             }
@@ -215,9 +221,17 @@ namespace CASA
                 foreach (var e in enabledEdges)
                 {
                     edgePen.Color = Color.Red;
-                    needrefresh = true;
+                    if (squareOneCheckBox.Checked)
+                    {
+                        needrefreshDijkstra = true;
+                    }
+                    else if (CasaCheckBox.Checked)
+                    {
+                        needrefreshCASA = true;
+                    }
                     graphics.DrawLine(edgePen, vertexToDraw[e.X], vertexToDraw[e.Y]);
                 }
+                edgePen.Color = Color.Black;
             }catch(Exception ex)
             {
                 Console.WriteLine("Nincs törlendő él!");
@@ -232,7 +246,13 @@ namespace CASA
         {
             if (squareOneCheckBox.Checked)
             {
+                cleanGraph();
                 CasaCheckBox.Checked = false;
+                edgeDeleteCheckBox.Visible = true;
+                deleteEdgeCasaCheckBox.Visible = false;
+            }else
+            {
+                edgeDeleteCheckBox.Visible = false;
             }
         }
 
@@ -240,11 +260,15 @@ namespace CASA
         {
             if (CasaCheckBox.Checked)
             {
+                cleanGraph();
+                edgeDeleteCheckBox.Visible = false;
+                deleteEdgeCasaCheckBox.Visible = true;
                 squareOneCheckBox.Checked = false;
                 arbButton.Visible = true;
             }
             else
             {
+                deleteEdgeCasaCheckBox.Visible = false;
                 arbButton.Visible = false;
             }
         }
@@ -262,6 +286,41 @@ namespace CASA
             if (destCheckBox.Checked)
             {
                 startCheckBox.Checked = false;
+            }
+        }
+
+        private void edgeDeleteCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (edgeDeleteCheckBox.Checked)
+            {
+                startCheckBox.Checked = false;
+                destCheckBox.Checked = false;
+                startCheckBox.Enabled = false;
+                destCheckBox.Enabled = false;
+
+                needrefreshDijkstra = true;
+            }
+            else
+            {
+                startCheckBox.Enabled = true;
+                destCheckBox.Enabled = true;
+            }
+        }
+        
+        private void deleteEdgeCasaCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (deleteEdgeCasaCheckBox.Checked)
+            {
+                startCheckBox.Checked = false;
+                destCheckBox.Checked = false;
+                startCheckBox.Enabled = false;
+                destCheckBox.Enabled = false;
+
+                needrefreshCASA = true;
+            }else
+            {
+                startCheckBox.Enabled = true;
+                destCheckBox.Enabled = true;
             }
         }
 
@@ -290,25 +349,7 @@ namespace CASA
             }
         }
         #endregion
-
-        private void edgeDeleteCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (edgeDeleteCheckBox.Checked)
-            {
-                startCheckBox.Checked = false;
-                destCheckBox.Checked = false;
-                startCheckBox.Enabled = false;
-                destCheckBox.Enabled = false;
-                
-                needrefresh = true;
-            }
-            else
-            {
-                startCheckBox.Enabled = true;
-                destCheckBox.Enabled = true;
-            }
-        }
-
+        
         public int closestPoint(Point p)
         {
             List<Point> vertices = graph.getVertices();
@@ -345,20 +386,31 @@ namespace CASA
 
         private void gráfTisztázásaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            graph.startIndex = -1;
+            graph.destIndex = -1;
             cleanGraph();
         }
 
         private void cleanGraph()
         {
-            graph.startIndex = -1;
-            graph.destIndex = -1;
+            graphics.Clear(Color.White);
             graph.clearDeletedEdges();
             graph.shortestPathToColor = new List<Point>();
-            isCasaActive = false;
+            if (squareOneCheckBox.Checked)
+            {
+                isCasaActive = false;
+            }else
+            {
+                isCasaActive = true;
+            }
+            needrefreshDijkstra = false;
+            needrefreshCASA = false;
+            firstDijkstra = false;
             shortestPathInfosLabel.Text = "";
+            arborescenceLabel.Text = "";
             refreshGraphics();
         }
-
+        
         private void refreshLabel()
         {
             StringBuilder sb = new StringBuilder();
