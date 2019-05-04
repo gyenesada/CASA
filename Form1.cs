@@ -14,8 +14,11 @@ namespace CASA
     {
 
         Graphics graphics;
-        Graph graph = new Graph();
+        Graph graph;
         List<Point> vertexPufferToDraw = new List<Point>();
+        bool needrefresh = false;
+        bool firstDijkstra = false;
+        bool isCasaActive = false;
 
         Pen vertexPen = new Pen(Color.Black, 2);
         Pen edgePen = new Pen(Color.Blue, 2);
@@ -23,6 +26,7 @@ namespace CASA
         public Form()
         {
             InitializeComponent();
+            graph = new Graph();
         }
 
         private void gráfBetöltéseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -54,6 +58,7 @@ namespace CASA
         {
             graphics.Clear(Color.White);
             graph.deleteGraph();
+            shortestPathInfosLabel.Text = "";
         }
 
 
@@ -98,6 +103,13 @@ namespace CASA
                         graph.deleteConnection(vertexPufferToDraw.First(), resultPoint);
                         vertexPufferToDraw.Add(resultPoint);
                         refreshGraphics();
+                        if (needrefresh)
+                        {
+                            graph.Dijkstra();
+                            refreshGraphics();
+                            refreshLabel();
+                            needrefresh = false;
+                        }
                         vertexPufferToDraw.Clear();
                     }
                 }else
@@ -111,8 +123,8 @@ namespace CASA
                     else
                     {
                         graph.addConnection(vertexPufferToDraw.First(), resultPoint);
-                        vertexPufferToDraw.Clear();
                         refreshGraphics();
+                        vertexPufferToDraw.Clear();
                     }
                 }
             }
@@ -170,7 +182,21 @@ namespace CASA
                 {
                     edgePen.Color = Color.Black;
                 }
-                graphics.DrawLine(edgePen, firstPoint, secondPoint);
+
+                if (isCasaActive)
+                {
+                    DrawArrow(firstPoint, secondPoint);
+                }
+                else
+                {
+                    graphics.DrawLine(edgePen, firstPoint, secondPoint);
+                }
+
+                if (firstDijkstra)
+                {
+                    graph.Dijkstra();
+                    needrefresh = true;
+                }
             }
 
             try
@@ -178,6 +204,7 @@ namespace CASA
                 foreach (var e in enabledEdges)
                 {
                     edgePen.Color = Color.Red;
+                    needrefresh = true;
                     graphics.DrawLine(edgePen, vertexToDraw[e.X], vertexToDraw[e.Y]);
                 }
             }catch(Exception ex)
@@ -203,22 +230,11 @@ namespace CASA
             if (CasaCheckBox.Checked)
             {
                 squareOneCheckBox.Checked = false;
+                arbButton.Visible = true;
             }
-        }
-
-        private void directedErrorCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (directedErrorCheckBox.Checked)
+            else
             {
-                randomErrorCheckBox.Checked = false;
-            }
-        }
-
-        private void randomErrorCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (randomErrorCheckBox.Checked)
-            {
-                directedErrorCheckBox.Checked = false;
+                arbButton.Visible = false;
             }
         }
 
@@ -243,21 +259,19 @@ namespace CASA
         #region MainAlgorithms
         private void runButton_Click(object sender, EventArgs e)
         {
-            if (randomErrorCheckBox.Checked && squareOneCheckBox.Checked)
+            isCasaActive = false;
+            if (squareOneCheckBox.Checked)
             {
-                MessageBox.Show("SquareOne és random");
+                graph.Dijkstra();
+                firstDijkstra = true;
+                refreshLabel();                
+                refreshGraphics();
             }
-            else if (randomErrorCheckBox.Checked && CasaCheckBox.Checked)
+            else if (CasaCheckBox.Checked)
             {
-                MessageBox.Show("CASA és random");
-            }
-            else if (directedErrorCheckBox.Checked && squareOneCheckBox.Checked)
-            {
-                MessageBox.Show("SquareOne és directed");
-            }
-            else if (directedErrorCheckBox.Checked && CasaCheckBox.Checked)
-            {
-                MessageBox.Show("CASA és directed");
+                //graph.printAllPaths(graph.startIndex, graph.destIndex);
+                //isCasaActive = true;
+                //refreshGraphics();
             }
             else
             {
@@ -265,13 +279,6 @@ namespace CASA
             }
         }
         #endregion
-
-        private void dijkstraButton_Click(object sender, EventArgs e)
-        {
-            graph.Dijkstra();
-
-            refreshGraphics();
-        }
 
         private void edgeDeleteCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -281,7 +288,8 @@ namespace CASA
                 destCheckBox.Checked = false;
                 startCheckBox.Enabled = false;
                 destCheckBox.Enabled = false;
-
+                
+                needrefresh = true;
             }
             else
             {
@@ -293,23 +301,32 @@ namespace CASA
         public int closestPoint(Point p)
         {
             List<Point> vertices = graph.getVertices();
+
             int resultIndex = 0;
-            double deltaX = vertices.First().X - p.X;
-            double deltaY = vertices.First().Y - p.Y;
 
-            double minDistance = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
-            for (int i = 1; i < vertices.Count; i++)
+            try
             {
-                deltaX = vertices.ElementAt(i).X - p.X;
-                deltaY = vertices.ElementAt(i).Y - p.Y;
+                double deltaX = vertices.First().X - p.X;
+                double deltaY = vertices.First().Y - p.Y;
 
-                double newDistance = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
-
-                if (newDistance < minDistance)
+                double minDistance = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+                for (int i = 1; i < vertices.Count; i++)
                 {
-                    minDistance = newDistance;
-                    resultIndex = i;
+                    deltaX = vertices.ElementAt(i).X - p.X;
+                    deltaY = vertices.ElementAt(i).Y - p.Y;
+
+                    double newDistance = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+
+                    if (newDistance < minDistance)
+                    {
+                        minDistance = newDistance;
+                        resultIndex = i;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Él hozzáadása sikertelen.");
             }
 
             return resultIndex;
@@ -320,7 +337,73 @@ namespace CASA
             graph.startIndex = -1;
             graph.destIndex = -1;
             graph.clearDeletedEdges();
+            graph.shortestPathToColor = new List<Point>();
+            shortestPathInfosLabel.Text = "";
             refreshGraphics();
+        }
+
+        private void refreshLabel()
+        {
+            StringBuilder sb = new StringBuilder();
+            //kell?
+            sb.Append("vertex \t distance \t last vertex\n");
+            for (int i = 0; i < graph.Vertices.Count; ++i)
+            {
+                if (graph.distances[i] == int.MaxValue)
+                {
+                    sb.Append(i + "   \t          -         \t   " + graph.path[i] + "\n");
+                }
+                if (graph.path[i] == -1)
+                {
+                    sb.Append(i + "   \t         " + graph.distances[i] + "         \t   \n");
+                }
+                else
+                {
+                    sb.Append(i + "   \t         " + graph.distances[i] + "         \t   " + graph.path[i] + "\n");
+                }
+            }
+            shortestPathInfosLabel.Text = sb.ToString();
+        }
+
+        private void DrawArrowhead(
+            PointF p, float nx, float ny)
+        {
+            float ax = 8*(-ny - nx);
+            float ay = 8*(nx - ny);
+            PointF[] points =
+            {
+                new PointF(p.X + ax, p.Y + ay),
+                p,
+                new PointF(p.X - ay, p.Y + ax)
+            };
+            edgePen.Color = Color.Blue;
+            graphics.DrawLines(edgePen, points);
+            edgePen.Color = Color.Black;
+        }
+
+        private void DrawArrow(PointF p1, PointF p2)
+        {
+
+            graphics.DrawLine(edgePen, p1, p2);
+            
+            float vx = p2.X - p1.X;
+            float vy = p2.Y - p1.Y;
+            float dist = (float)Math.Sqrt(vx * vx + vy * vy);
+            vx /= dist;
+            vy /= dist;
+
+            DrawArrowhead(p2, vx, vy);
+
+        }
+
+        private void arbButton_Click(object sender, EventArgs e)
+        {
+            if (CasaCheckBox.Checked)
+            {
+                graph.printAllPaths(graph.startIndex, graph.destIndex);
+                isCasaActive = true;
+                refreshGraphics();
+            }
         }
     }
 }

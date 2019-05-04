@@ -16,6 +16,9 @@ namespace CASA
         StringBuilder shortestPathToDestination = new StringBuilder();
         public List<int> pathIndex = new List<int>();
         public List<Point> shortestPathToColor = new List<Point>();
+        public int[] distances;
+        public int[] path;
+        List<int>[] adjList; //szomszédsági lista
 
         public int startIndex = -1;
         public int destIndex = -1;
@@ -23,6 +26,8 @@ namespace CASA
         public Graph()
         {
             Vertices = new List<Point>();
+
+            initAdjList();
         }
 
         public Graph(string graphText)
@@ -82,7 +87,7 @@ namespace CASA
             if (!Vertices.Contains(point))
             {
                 Vertices.Add(point);
-
+                initAdjList();
                 Console.WriteLine(point.ToString());
                 Console.WriteLine(Vertices.Count);
             }
@@ -105,6 +110,8 @@ namespace CASA
                     secondIndex = i;
                 }
             }
+
+            adjList[firstIndex].Add(secondIndex);
 
             if (firstIndex == secondIndex) return;
             utMatrix[new Point(firstIndex, secondIndex)] = 1;
@@ -147,11 +154,6 @@ namespace CASA
             shortestPathToColor = new List<Point>();
         }
 
-        //public void clearShortestPath()
-        //{
-        //    shortestPathToColor.Clear();
-        //}
-
         public void clearDeletedEdges()
         {
             List<Point> edges = utMatrix.getEnabledValues();
@@ -168,11 +170,11 @@ namespace CASA
         public void Dijkstra()
         {
             int vertexNumber = Vertices.Count();
-            int[] distances = new int[vertexNumber];
+            distances = new int[vertexNumber];
             bool[] shortestPathBool = new bool[vertexNumber];
             shortestPathToColor = new List<Point>();
             pathIndex = new List<int>();
-            int[] path = new int[vertexNumber];
+            path = new int[vertexNumber];
 
             for (int i = 0; i < vertexNumber; ++i)
             {
@@ -199,11 +201,6 @@ namespace CASA
                 }
             }
 
-            Console.WriteLine("Vertex    Distance from source       Last vertex");
-
-            for (int i = 0; i < vertexNumber; ++i)
-                Console.WriteLine("{0}\t  {1}\t   {2}", i, distances[i], path[i]);
-
             try
             {
                 int index = destIndex;
@@ -214,19 +211,20 @@ namespace CASA
                     shortestPathToDestination.Append(index + "-");
                     pathIndex.Add(index);
                 }
-            }catch(IndexOutOfRangeException ex)
+                
+                Console.WriteLine(shortestPathToDestination.ToString());
+
+                for (int i = 0; i <= pathIndex.Count - 2; i++)
+                {
+                    shortestPathToColor.Add(Vertices[pathIndex[i]]);
+                    shortestPathToColor.Add(Vertices[pathIndex[i + 1]]);
+                }
+            }
+            catch (IndexOutOfRangeException ex)
             {
                 MessageBox.Show("Nem található közvetlen út!");
             }
 
-            Console.WriteLine(shortestPathToDestination.ToString());
-
-            for(int i = 0; i<=pathIndex.Count - 2; i++)
-            {
-                shortestPathToColor.Add(Vertices[pathIndex[i]]);
-                shortestPathToColor.Add(Vertices[pathIndex[i + 1]]);
-            }
-            
         }
 
         public int shortestDistance(int[] distance, bool[] shortestPath, int vertexNum)
@@ -244,6 +242,57 @@ namespace CASA
             }
 
             return minIndex;
+        }
+
+        #endregion
+
+        #region DFS
+        
+        public void initAdjList()
+        {
+            adjList = new List<int>[Vertices.Count];
+
+            for(int i=0; i<Vertices.Count; i++)
+            {
+                adjList[i] = new List<int>();
+            }
+        } 
+
+        //print all paths from s to d
+        public void printAllPaths(int s, int d)
+        {
+            if (s == -1 || d == -1) MessageBox.Show("Nincs kezdő, vagy végpont megadva!");
+            bool[] isVisited = new bool[Vertices.Count];
+            List<int> pathList = new List<int>();
+
+            pathList.Add(s);
+
+            printAllPathsUtil(s, d, isVisited, pathList);
+        }
+
+        private void printAllPathsUtil(int u, int d, bool[] isVisited, List<int> localPathList)
+        {
+            isVisited[u] = true; //aktuális csúcs
+
+            if (u.Equals(d))
+            {
+                Console.WriteLine(string.Join(" ", localPathList));
+                isVisited[u] = false;
+                return;
+            }
+
+            foreach(int i in adjList[u])
+            {
+                if (!isVisited[i])
+                {
+                    localPathList.Add(i); //akt.csúcs listába
+                    printAllPathsUtil(i, d, isVisited, localPathList);
+
+                    localPathList.Remove(i); //akt.csúcs leszedése
+                }
+
+                isVisited[u] = false;
+            }
         }
 
         #endregion

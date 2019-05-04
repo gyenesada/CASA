@@ -32,13 +32,11 @@
             this.algorithmType = new System.Windows.Forms.Label();
             this.squareOneCheckBox = new System.Windows.Forms.CheckBox();
             this.CasaCheckBox = new System.Windows.Forms.CheckBox();
-            this.generateErrorLabel = new System.Windows.Forms.Label();
-            this.directedErrorCheckBox = new System.Windows.Forms.CheckBox();
-            this.randomErrorCheckBox = new System.Windows.Forms.CheckBox();
             this.runButton = new System.Windows.Forms.Button();
             this.menuSav = new System.Windows.Forms.MenuStrip();
             this.fájlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.képernyőTörléseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gráfTisztázásaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gráfBetöltéseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kilépésToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.mátrixMegjelenítésToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,9 +46,9 @@
             this.pointLabel = new System.Windows.Forms.Label();
             this.startCheckBox = new System.Windows.Forms.CheckBox();
             this.destCheckBox = new System.Windows.Forms.CheckBox();
-            this.dijkstraButton = new System.Windows.Forms.Button();
             this.edgeDeleteCheckBox = new System.Windows.Forms.CheckBox();
-            this.gráfTisztázásaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shortestPathInfosLabel = new System.Windows.Forms.Label();
+            this.arbButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.menuSav.SuspendLayout();
             this.SuspendLayout();
@@ -99,41 +97,9 @@
             this.CasaCheckBox.UseVisualStyleBackColor = true;
             this.CasaCheckBox.CheckedChanged += new System.EventHandler(this.CasaCheckBox_CheckedChanged);
             // 
-            // generateErrorLabel
-            // 
-            this.generateErrorLabel.AutoSize = true;
-            this.generateErrorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.generateErrorLabel.Location = new System.Drawing.Point(479, 129);
-            this.generateErrorLabel.Name = "generateErrorLabel";
-            this.generateErrorLabel.Size = new System.Drawing.Size(108, 17);
-            this.generateErrorLabel.TabIndex = 4;
-            this.generateErrorLabel.Text = "Hiba generálás:";
-            // 
-            // directedErrorCheckBox
-            // 
-            this.directedErrorCheckBox.AutoSize = true;
-            this.directedErrorCheckBox.Location = new System.Drawing.Point(496, 161);
-            this.directedErrorCheckBox.Name = "directedErrorCheckBox";
-            this.directedErrorCheckBox.Size = new System.Drawing.Size(81, 17);
-            this.directedErrorCheckBox.TabIndex = 5;
-            this.directedErrorCheckBox.Text = "Célzott hiba";
-            this.directedErrorCheckBox.UseVisualStyleBackColor = true;
-            this.directedErrorCheckBox.CheckedChanged += new System.EventHandler(this.directedErrorCheckBox_CheckedChanged);
-            // 
-            // randomErrorCheckBox
-            // 
-            this.randomErrorCheckBox.AutoSize = true;
-            this.randomErrorCheckBox.Location = new System.Drawing.Point(496, 184);
-            this.randomErrorCheckBox.Name = "randomErrorCheckBox";
-            this.randomErrorCheckBox.Size = new System.Drawing.Size(89, 17);
-            this.randomErrorCheckBox.TabIndex = 6;
-            this.randomErrorCheckBox.Text = "Random hiba";
-            this.randomErrorCheckBox.UseVisualStyleBackColor = true;
-            this.randomErrorCheckBox.CheckedChanged += new System.EventHandler(this.randomErrorCheckBox_CheckedChanged);
-            // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(600, 207);
+            this.runButton.Location = new System.Drawing.Point(481, 314);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(75, 23);
             this.runButton.TabIndex = 7;
@@ -170,6 +136,13 @@
             this.képernyőTörléseToolStripMenuItem.Text = "Képernyő törlése";
             this.képernyőTörléseToolStripMenuItem.Click += new System.EventHandler(this.képernyőTörléseToolStripMenuItem_Click);
             // 
+            // gráfTisztázásaToolStripMenuItem
+            // 
+            this.gráfTisztázásaToolStripMenuItem.Name = "gráfTisztázásaToolStripMenuItem";
+            this.gráfTisztázásaToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.gráfTisztázásaToolStripMenuItem.Text = "Gráf tisztázása";
+            this.gráfTisztázásaToolStripMenuItem.Click += new System.EventHandler(this.gráfTisztázásaToolStripMenuItem_Click);
+            // 
             // gráfBetöltéseToolStripMenuItem
             // 
             this.gráfBetöltéseToolStripMenuItem.Enabled = false;
@@ -194,7 +167,7 @@
             // consoleTextBox
             // 
             this.consoleTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.consoleTextBox.Location = new System.Drawing.Point(0, 391);
+            this.consoleTextBox.Location = new System.Drawing.Point(0, 419);
             this.consoleTextBox.Multiline = true;
             this.consoleTextBox.Name = "consoleTextBox";
             this.consoleTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -205,7 +178,7 @@
             // 
             this.addGraphConsoleLabel.AutoSize = true;
             this.addGraphConsoleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.addGraphConsoleLabel.Location = new System.Drawing.Point(-3, 365);
+            this.addGraphConsoleLabel.Location = new System.Drawing.Point(-3, 399);
             this.addGraphConsoleLabel.Name = "addGraphConsoleLabel";
             this.addGraphConsoleLabel.Size = new System.Drawing.Size(106, 17);
             this.addGraphConsoleLabel.TabIndex = 10;
@@ -213,7 +186,7 @@
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(605, 362);
+            this.loadButton.Location = new System.Drawing.Point(605, 390);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(75, 23);
             this.loadButton.TabIndex = 11;
@@ -252,16 +225,6 @@
             this.destCheckBox.UseVisualStyleBackColor = true;
             this.destCheckBox.CheckedChanged += new System.EventHandler(this.destCheckBox_CheckedChanged);
             // 
-            // dijkstraButton
-            // 
-            this.dijkstraButton.Location = new System.Drawing.Point(496, 280);
-            this.dijkstraButton.Name = "dijkstraButton";
-            this.dijkstraButton.Size = new System.Drawing.Size(75, 23);
-            this.dijkstraButton.TabIndex = 15;
-            this.dijkstraButton.Text = "Dijkstra";
-            this.dijkstraButton.UseVisualStyleBackColor = true;
-            this.dijkstraButton.Click += new System.EventHandler(this.dijkstraButton_Click);
-            // 
             // edgeDeleteCheckBox
             // 
             this.edgeDeleteCheckBox.AutoSize = true;
@@ -273,20 +236,33 @@
             this.edgeDeleteCheckBox.UseVisualStyleBackColor = true;
             this.edgeDeleteCheckBox.CheckedChanged += new System.EventHandler(this.edgeDeleteCheckBox_CheckedChanged);
             // 
-            // gráfTisztázásaToolStripMenuItem
+            // shortestPathInfosLabel
             // 
-            this.gráfTisztázásaToolStripMenuItem.Name = "gráfTisztázásaToolStripMenuItem";
-            this.gráfTisztázásaToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.gráfTisztázásaToolStripMenuItem.Text = "Gráf tisztázása";
-            this.gráfTisztázásaToolStripMenuItem.Click += new System.EventHandler(this.gráfTisztázásaToolStripMenuItem_Click);
+            this.shortestPathInfosLabel.AutoSize = true;
+            this.shortestPathInfosLabel.Location = new System.Drawing.Point(496, 244);
+            this.shortestPathInfosLabel.Name = "shortestPathInfosLabel";
+            this.shortestPathInfosLabel.Size = new System.Drawing.Size(0, 13);
+            this.shortestPathInfosLabel.TabIndex = 17;
+            // 
+            // arbButton
+            // 
+            this.arbButton.Location = new System.Drawing.Point(496, 121);
+            this.arbButton.Name = "arbButton";
+            this.arbButton.Size = new System.Drawing.Size(107, 21);
+            this.arbButton.TabIndex = 18;
+            this.arbButton.Text = "Arb. meghatározás";
+            this.arbButton.UseVisualStyleBackColor = true;
+            this.arbButton.Visible = false;
+            this.arbButton.Click += new System.EventHandler(this.arbButton_Click);
             // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(692, 437);
+            this.ClientSize = new System.Drawing.Size(692, 465);
+            this.Controls.Add(this.arbButton);
+            this.Controls.Add(this.shortestPathInfosLabel);
             this.Controls.Add(this.edgeDeleteCheckBox);
-            this.Controls.Add(this.dijkstraButton);
             this.Controls.Add(this.destCheckBox);
             this.Controls.Add(this.startCheckBox);
             this.Controls.Add(this.pointLabel);
@@ -294,9 +270,6 @@
             this.Controls.Add(this.addGraphConsoleLabel);
             this.Controls.Add(this.consoleTextBox);
             this.Controls.Add(this.runButton);
-            this.Controls.Add(this.randomErrorCheckBox);
-            this.Controls.Add(this.directedErrorCheckBox);
-            this.Controls.Add(this.generateErrorLabel);
             this.Controls.Add(this.CasaCheckBox);
             this.Controls.Add(this.squareOneCheckBox);
             this.Controls.Add(this.algorithmType);
@@ -319,9 +292,6 @@
         private System.Windows.Forms.Label algorithmType;
         private System.Windows.Forms.CheckBox squareOneCheckBox;
         private System.Windows.Forms.CheckBox CasaCheckBox;
-        private System.Windows.Forms.Label generateErrorLabel;
-        private System.Windows.Forms.CheckBox directedErrorCheckBox;
-        private System.Windows.Forms.CheckBox randomErrorCheckBox;
         private System.Windows.Forms.Button runButton;
         private System.Windows.Forms.MenuStrip menuSav;
         private System.Windows.Forms.ToolStripMenuItem fájlToolStripMenuItem;
@@ -335,9 +305,10 @@
         private System.Windows.Forms.CheckBox startCheckBox;
         private System.Windows.Forms.CheckBox destCheckBox;
         private System.Windows.Forms.ToolStripMenuItem képernyőTörléseToolStripMenuItem;
-        private System.Windows.Forms.Button dijkstraButton;
         private System.Windows.Forms.CheckBox edgeDeleteCheckBox;
         private System.Windows.Forms.ToolStripMenuItem gráfTisztázásaToolStripMenuItem;
+        private System.Windows.Forms.Label shortestPathInfosLabel;
+        private System.Windows.Forms.Button arbButton;
     }
 }
 
