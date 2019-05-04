@@ -18,7 +18,8 @@ namespace CASA
         public List<Point> shortestPathToColor = new List<Point>();
         public int[] distances;
         public int[] path;
-        List<int>[] adjList; //szomszédsági lista
+        public List<int>[] adjList; //szomszédsági lista
+        public List<List<int>> arborescences = new List<List<int>>();
 
         public int startIndex = -1;
         public int destIndex = -1;
@@ -110,10 +111,9 @@ namespace CASA
                     secondIndex = i;
                 }
             }
+            if (firstIndex == secondIndex) return;
 
             adjList[firstIndex].Add(secondIndex);
-
-            if (firstIndex == secondIndex) return;
             utMatrix[new Point(firstIndex, secondIndex)] = 1;
         }
 
@@ -261,37 +261,47 @@ namespace CASA
         //print all paths from s to d
         public void printAllPaths(int s, int d)
         {
-            if (s == -1 || d == -1) MessageBox.Show("Nincs kezdő, vagy végpont megadva!");
             bool[] isVisited = new bool[Vertices.Count];
             List<int> pathList = new List<int>();
 
             pathList.Add(s);
 
+            arborescences.Clear();
             printAllPathsUtil(s, d, isVisited, pathList);
         }
 
         private void printAllPathsUtil(int u, int d, bool[] isVisited, List<int> localPathList)
         {
-            isVisited[u] = true; //aktuális csúcs
-
-            if (u.Equals(d))
+            try
             {
-                Console.WriteLine(string.Join(" ", localPathList));
-                isVisited[u] = false;
-                return;
-            }
+                isVisited[u] = true; //aktuális csúcs
 
-            foreach(int i in adjList[u])
-            {
-                if (!isVisited[i])
+                if (u.Equals(d))
                 {
-                    localPathList.Add(i); //akt.csúcs listába
-                    printAllPathsUtil(i, d, isVisited, localPathList);
+                    Console.WriteLine(string.Join("-", localPathList));
+                    isVisited[u] = false;
 
-                    localPathList.Remove(i); //akt.csúcs leszedése
+                    arborescences.Add(new List<int>(localPathList.ToArray()));
+                    return;
                 }
 
-                isVisited[u] = false;
+                foreach (int i in adjList[u])
+                {
+                    if (!isVisited[i])
+                    {
+                        localPathList.Add(i); //akt.csúcs listába
+                        printAllPathsUtil(i, d, isVisited, localPathList);
+
+                        localPathList.Remove(i); //akt.csúcs leszedése
+                    }
+
+                    isVisited[u] = false;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Nincs kezdő, vagy végpont megadva!");
             }
         }
 

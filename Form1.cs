@@ -20,8 +20,8 @@ namespace CASA
         bool firstDijkstra = false;
         bool isCasaActive = false;
 
-        Pen vertexPen = new Pen(Color.Black, 2);
-        Pen edgePen = new Pen(Color.Blue, 2);
+        Pen vertexPen = new Pen(Color.Black, 5);
+        Pen edgePen = new Pen(Color.Blue, 3);
 
         public Form()
         {
@@ -58,6 +58,7 @@ namespace CASA
         {
             graphics.Clear(Color.White);
             graph.deleteGraph();
+            isCasaActive = false;
             shortestPathInfosLabel.Text = "";
         }
 
@@ -164,41 +165,51 @@ namespace CASA
                     vertexPen.Color = Color.Black;
                 }
 
-                graphics.DrawEllipse(vertexPen, vertexToDraw[i].X - 3, vertexToDraw[i].Y - 3, 6, 6);
+                graphics.DrawEllipse(vertexPen, vertexToDraw[i].X-5, vertexToDraw[i].Y-5, 10, 10);
             }
 
             List<Point> edgesToDraw = edgeMatrix.getValues();
             List<Point> enabledEdges = edgeMatrix.getEnabledValues();
 
-            foreach (var e in edgesToDraw)
+            if (isCasaActive)
             {
-                Point firstPoint = vertexToDraw[e.X];
-                Point secondPoint = vertexToDraw[e.Y];
+                for(int i=0; i<graph.Vertices.Count; i++)
+                {
+                    Point firstPoint = graph.Vertices[i];
 
-                if(graph.shortestPathToColor.Contains(firstPoint) && graph.shortestPathToColor.Contains(secondPoint))
-                {
-                    edgePen.Color = Color.Green;
-                }else
-                {
-                    edgePen.Color = Color.Black;
-                }
-
-                if (isCasaActive)
-                {
-                    DrawArrow(firstPoint, secondPoint);
-                }
-                else
-                {
-                    graphics.DrawLine(edgePen, firstPoint, secondPoint);
-                }
-
-                if (firstDijkstra)
-                {
-                    graph.Dijkstra();
-                    needrefresh = true;
+                    for(int j=0; j<graph.adjList[i].Count; j++)
+                    {
+                        Point secondPoint = graph.Vertices[graph.adjList[i][j]];
+                        Console.WriteLine(i + "-től fut él " + graph.adjList[i][j] + "-be");
+                        DrawArrow(firstPoint, secondPoint);
+                    }
                 }
             }
+            else
+            {
+                foreach (var e in edgesToDraw)
+                {
+                    Point firstPoint = vertexToDraw[e.X];
+                    Point secondPoint = vertexToDraw[e.Y];
 
+                    if (graph.shortestPathToColor.Contains(firstPoint) && graph.shortestPathToColor.Contains(secondPoint))
+                    {
+                        edgePen.Color = Color.Green;
+                    }
+                    else
+                    {
+                        edgePen.Color = Color.Black;
+                    }
+
+                    graphics.DrawLine(edgePen, firstPoint, secondPoint);
+
+                    if (firstDijkstra)
+                    {
+                        graph.Dijkstra();
+                        needrefresh = true;
+                    }
+                }
+            }
             try
             {
                 foreach (var e in enabledEdges)
@@ -334,10 +345,16 @@ namespace CASA
 
         private void gráfTisztázásaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            cleanGraph();
+        }
+
+        private void cleanGraph()
+        {
             graph.startIndex = -1;
             graph.destIndex = -1;
             graph.clearDeletedEdges();
             graph.shortestPathToColor = new List<Point>();
+            isCasaActive = false;
             shortestPathInfosLabel.Text = "";
             refreshGraphics();
         }
@@ -365,11 +382,10 @@ namespace CASA
             shortestPathInfosLabel.Text = sb.ToString();
         }
 
-        private void DrawArrowhead(
-            PointF p, float nx, float ny)
+        private void DrawArrowhead(PointF p, float nx, float ny)
         {
-            float ax = 8*(-ny - nx);
-            float ay = 8*(nx - ny);
+            float ax = 10*(-ny - nx);
+            float ay = 10*(nx - ny);
             PointF[] points =
             {
                 new PointF(p.X + ax, p.Y + ay),
@@ -383,7 +399,6 @@ namespace CASA
 
         private void DrawArrow(PointF p1, PointF p2)
         {
-
             graphics.DrawLine(edgePen, p1, p2);
             
             float vx = p2.X - p1.X;
@@ -403,6 +418,19 @@ namespace CASA
                 graph.printAllPaths(graph.startIndex, graph.destIndex);
                 isCasaActive = true;
                 refreshGraphics();
+
+                StringBuilder sb = new StringBuilder();
+                for(int i = 0; i<graph.arborescences.Count; i++)
+                {
+                    sb.Append("T" + i + ": ");
+                    for (int j = 0; j < graph.arborescences[i].Count; j++)
+                    {
+                        sb.Append(graph.arborescences[i][j] + " ");
+                    }
+                    sb.Append("\n");
+                }
+
+                arborescenceLabel.Text = sb.ToString();
             }
         }
     }

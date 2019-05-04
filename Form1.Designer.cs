@@ -49,6 +49,7 @@
             this.edgeDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.shortestPathInfosLabel = new System.Windows.Forms.Label();
             this.arbButton = new System.Windows.Forms.Button();
+            this.arborescenceLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.menuSav.SuspendLayout();
             this.SuspendLayout();
@@ -59,7 +60,7 @@
             this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.canvas.Location = new System.Drawing.Point(0, 27);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(472, 310);
+            this.canvas.Size = new System.Drawing.Size(689, 390);
             this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
             this.canvas.Click += new System.EventHandler(this.canvas_Click);
@@ -69,7 +70,7 @@
             // 
             this.algorithmType.AutoSize = true;
             this.algorithmType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.algorithmType.Location = new System.Drawing.Point(478, 45);
+            this.algorithmType.Location = new System.Drawing.Point(707, 53);
             this.algorithmType.Name = "algorithmType";
             this.algorithmType.Size = new System.Drawing.Size(78, 17);
             this.algorithmType.TabIndex = 1;
@@ -78,7 +79,7 @@
             // squareOneCheckBox
             // 
             this.squareOneCheckBox.AutoSize = true;
-            this.squareOneCheckBox.Location = new System.Drawing.Point(496, 75);
+            this.squareOneCheckBox.Location = new System.Drawing.Point(710, 88);
             this.squareOneCheckBox.Name = "squareOneCheckBox";
             this.squareOneCheckBox.Size = new System.Drawing.Size(80, 17);
             this.squareOneCheckBox.TabIndex = 2;
@@ -89,7 +90,7 @@
             // CasaCheckBox
             // 
             this.CasaCheckBox.AutoSize = true;
-            this.CasaCheckBox.Location = new System.Drawing.Point(496, 98);
+            this.CasaCheckBox.Location = new System.Drawing.Point(710, 111);
             this.CasaCheckBox.Name = "CasaCheckBox";
             this.CasaCheckBox.Size = new System.Drawing.Size(54, 17);
             this.CasaCheckBox.TabIndex = 3;
@@ -99,7 +100,7 @@
             // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(481, 314);
+            this.runButton.Location = new System.Drawing.Point(695, 394);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(75, 23);
             this.runButton.TabIndex = 7;
@@ -113,7 +114,7 @@
             this.fájlToolStripMenuItem});
             this.menuSav.Location = new System.Drawing.Point(0, 0);
             this.menuSav.Name = "menuSav";
-            this.menuSav.Size = new System.Drawing.Size(692, 24);
+            this.menuSav.Size = new System.Drawing.Size(858, 24);
             this.menuSav.TabIndex = 8;
             this.menuSav.Text = "menuSav";
             // 
@@ -167,18 +168,18 @@
             // consoleTextBox
             // 
             this.consoleTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.consoleTextBox.Location = new System.Drawing.Point(0, 419);
+            this.consoleTextBox.Location = new System.Drawing.Point(0, 469);
             this.consoleTextBox.Multiline = true;
             this.consoleTextBox.Name = "consoleTextBox";
             this.consoleTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.consoleTextBox.Size = new System.Drawing.Size(692, 46);
+            this.consoleTextBox.Size = new System.Drawing.Size(858, 46);
             this.consoleTextBox.TabIndex = 9;
             // 
             // addGraphConsoleLabel
             // 
             this.addGraphConsoleLabel.AutoSize = true;
             this.addGraphConsoleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.addGraphConsoleLabel.Location = new System.Drawing.Point(-3, 399);
+            this.addGraphConsoleLabel.Location = new System.Drawing.Point(-3, 439);
             this.addGraphConsoleLabel.Name = "addGraphConsoleLabel";
             this.addGraphConsoleLabel.Size = new System.Drawing.Size(106, 17);
             this.addGraphConsoleLabel.TabIndex = 10;
@@ -186,7 +187,7 @@
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(605, 390);
+            this.loadButton.Location = new System.Drawing.Point(771, 436);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(75, 23);
             this.loadButton.TabIndex = 11;
@@ -197,7 +198,7 @@
             // pointLabel
             // 
             this.pointLabel.AutoSize = true;
-            this.pointLabel.Location = new System.Drawing.Point(0, 344);
+            this.pointLabel.Location = new System.Drawing.Point(12, 424);
             this.pointLabel.Name = "pointLabel";
             this.pointLabel.Size = new System.Drawing.Size(10, 13);
             this.pointLabel.TabIndex = 12;
@@ -206,7 +207,7 @@
             // startCheckBox
             // 
             this.startCheckBox.AutoSize = true;
-            this.startCheckBox.Location = new System.Drawing.Point(159, 344);
+            this.startCheckBox.Location = new System.Drawing.Point(142, 423);
             this.startCheckBox.Name = "startCheckBox";
             this.startCheckBox.Size = new System.Drawing.Size(48, 17);
             this.startCheckBox.TabIndex = 13;
@@ -217,7 +218,7 @@
             // destCheckBox
             // 
             this.destCheckBox.AutoSize = true;
-            this.destCheckBox.Location = new System.Drawing.Point(224, 344);
+            this.destCheckBox.Location = new System.Drawing.Point(196, 423);
             this.destCheckBox.Name = "destCheckBox";
             this.destCheckBox.Size = new System.Drawing.Size(79, 17);
             this.destCheckBox.TabIndex = 14;
@@ -228,7 +229,7 @@
             // edgeDeleteCheckBox
             // 
             this.edgeDeleteCheckBox.AutoSize = true;
-            this.edgeDeleteCheckBox.Location = new System.Drawing.Point(392, 344);
+            this.edgeDeleteCheckBox.Location = new System.Drawing.Point(620, 424);
             this.edgeDeleteCheckBox.Name = "edgeDeleteCheckBox";
             this.edgeDeleteCheckBox.Size = new System.Drawing.Size(69, 17);
             this.edgeDeleteCheckBox.TabIndex = 16;
@@ -239,14 +240,14 @@
             // shortestPathInfosLabel
             // 
             this.shortestPathInfosLabel.AutoSize = true;
-            this.shortestPathInfosLabel.Location = new System.Drawing.Point(496, 244);
+            this.shortestPathInfosLabel.Location = new System.Drawing.Point(701, 213);
             this.shortestPathInfosLabel.Name = "shortestPathInfosLabel";
             this.shortestPathInfosLabel.Size = new System.Drawing.Size(0, 13);
             this.shortestPathInfosLabel.TabIndex = 17;
             // 
             // arbButton
             // 
-            this.arbButton.Location = new System.Drawing.Point(496, 121);
+            this.arbButton.Location = new System.Drawing.Point(710, 148);
             this.arbButton.Name = "arbButton";
             this.arbButton.Size = new System.Drawing.Size(107, 21);
             this.arbButton.TabIndex = 18;
@@ -255,11 +256,21 @@
             this.arbButton.Visible = false;
             this.arbButton.Click += new System.EventHandler(this.arbButton_Click);
             // 
+            // arborescenceLabel
+            // 
+            this.arborescenceLabel.AutoSize = true;
+            this.arborescenceLabel.Location = new System.Drawing.Point(696, 197);
+            this.arborescenceLabel.Name = "arborescenceLabel";
+            this.arborescenceLabel.Size = new System.Drawing.Size(7, 13);
+            this.arborescenceLabel.TabIndex = 19;
+            this.arborescenceLabel.Text = "\r\n";
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(692, 465);
+            this.ClientSize = new System.Drawing.Size(858, 515);
+            this.Controls.Add(this.arborescenceLabel);
             this.Controls.Add(this.arbButton);
             this.Controls.Add(this.shortestPathInfosLabel);
             this.Controls.Add(this.edgeDeleteCheckBox);
@@ -309,6 +320,7 @@
         private System.Windows.Forms.ToolStripMenuItem gráfTisztázásaToolStripMenuItem;
         private System.Windows.Forms.Label shortestPathInfosLabel;
         private System.Windows.Forms.Button arbButton;
+        private System.Windows.Forms.Label arborescenceLabel;
     }
 }
 
