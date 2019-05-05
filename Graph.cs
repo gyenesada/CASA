@@ -153,6 +153,7 @@ namespace CASA
             utMatrix.Clear();
             startIndex = -1;
             destIndex = -1;
+            adjList = new List<int>[Vertices.Count];
             shortestPathToDestination = new StringBuilder();
             shortestPathToColor = new List<Point>();
         }
