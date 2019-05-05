@@ -12,7 +12,6 @@ namespace CASA
 {
     public partial class Form : System.Windows.Forms.Form
     {
-
         Graphics graphics;
         Graph graph;
         List<Point> vertexPufferToDraw = new List<Point>();
@@ -171,7 +170,11 @@ namespace CASA
                     vertexPen.Color = Color.Black;
                 }
 
+                Font drawFont = new Font("Arial", 12);
+                SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
+
                 graphics.DrawEllipse(vertexPen, vertexToDraw[i].X-5, vertexToDraw[i].Y-5, 10, 10);
+                graphics.DrawString(i.ToString(), drawFont, drawBrush, new PointF(vertexToDraw[i].X - 5, vertexToDraw[i].Y + 5));
             }
 
             List<Point> edgesToDraw = edgeMatrix.getValues();
@@ -484,6 +487,22 @@ namespace CASA
 
                 arborescenceLabel.Text = sb.ToString();
             }
+        }
+
+        private void mátrixMegjelenítésToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //lefut minden lehetséges start-dest párosra az arborescence meghatározás.
+            List<List<int>>[,] Matrix = new List<List<int>>[graph.Vertices.Count, graph.Vertices.Count];
+            
+            for(int i = 0; i<graph.Vertices.Count; i++)
+            {
+                for(int j = 0; j<graph.Vertices.Count; j++)
+                {
+                    Matrix[i,j] = graph.printAllPaths(i,j).ToArray().ToList();
+                }
+            }
+            MatrixForm mForm = new MatrixForm(Matrix, graph.Vertices.Count);
+            mForm.Show();
         }
     }
 }

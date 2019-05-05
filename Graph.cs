@@ -21,6 +21,7 @@ namespace CASA
         public List<int>[] adjList; //szomszédsági lista
         public List<List<int>> arborescences = new List<List<int>>();
 
+
         public int startIndex = -1;
         public int destIndex = -1;
 
@@ -88,7 +89,9 @@ namespace CASA
             if (!Vertices.Contains(point))
             {
                 Vertices.Add(point);
+                List<int>[] tempAdjList = adjList.ToArray();
                 initAdjList();
+                tempAdjList.CopyTo(adjList, 0);
                 Console.WriteLine(point.ToString());
                 Console.WriteLine(Vertices.Count);
             }
@@ -252,14 +255,14 @@ namespace CASA
         {
             adjList = new List<int>[Vertices.Count];
 
-            for(int i=0; i<Vertices.Count; i++)
+            for (int i = 0; i < Vertices.Count; i++)
             {
                 adjList[i] = new List<int>();
             }
         } 
-
+        
         //print all paths from s to d
-        public void printAllPaths(int s, int d)
+        public List<List<int>> printAllPaths(int s, int d)
         {
             bool[] isVisited = new bool[Vertices.Count];
             List<int> pathList = new List<int>();
@@ -268,6 +271,7 @@ namespace CASA
 
             arborescences.Clear();
             printAllPathsUtil(s, d, isVisited, pathList);
+            return arborescences;
         }
 
         private void printAllPathsUtil(int u, int d, bool[] isVisited, List<int> localPathList)

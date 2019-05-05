@@ -7,3 +7,4 @@ c:\users\gyenes adrienn\documents\visual studio 2015\Projects\CASA\CASA\obj\Debu
 c:\users\gyenes adrienn\documents\visual studio 2015\Projects\CASA\CASA\obj\Debug\CASA.exe
 c:\users\gyenes adrienn\documents\visual studio 2015\Projects\CASA\CASA\obj\Debug\CASA.pdb
 c:\users\gyenes adrienn\documents\visual studio 2015\Projects\CASA\CASA\obj\Debug\CASA.Form.resources
+C:\Users\Gyenes Adrienn\documents\visual studio 2015\Projects\CASA\CASA\obj\Debug\CASA.MatrixForm.resources

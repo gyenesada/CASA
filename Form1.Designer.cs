@@ -51,8 +51,10 @@
             this.arbButton = new System.Windows.Forms.Button();
             this.arborescenceLabel = new System.Windows.Forms.Label();
             this.deleteEdgeCasaCheckBox = new System.Windows.Forms.CheckBox();
+            this.performanceCounter1 = new System.Diagnostics.PerformanceCounter();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.menuSav.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).BeginInit();
             this.SuspendLayout();
             // 
             // canvas
@@ -165,6 +167,7 @@
             this.mátrixMegjelenítésToolStripMenuItem.Name = "mátrixMegjelenítésToolStripMenuItem";
             this.mátrixMegjelenítésToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.mátrixMegjelenítésToolStripMenuItem.Text = "Mátrix megjelenítése";
+            this.mátrixMegjelenítésToolStripMenuItem.Click += new System.EventHandler(this.mátrixMegjelenítésToolStripMenuItem_Click);
             // 
             // consoleTextBox
             // 
@@ -337,6 +340,7 @@
         private System.Windows.Forms.Button arbButton;
         private System.Windows.Forms.Label arborescenceLabel;
         private System.Windows.Forms.CheckBox deleteEdgeCasaCheckBox;
+        private System.Diagnostics.PerformanceCounter performanceCounter1;
     }
 }
 
