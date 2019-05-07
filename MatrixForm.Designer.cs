@@ -1,4 +1,6 @@
-﻿namespace CASA
+﻿using System.Windows.Forms;
+
+namespace CASA
 {
     partial class MatrixForm
     {
@@ -37,18 +39,19 @@
             this.matrixTable.AutoSize = true;
             this.matrixTable.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.matrixTable.ColumnCount = 0;
-            this.matrixTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.matrixTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.matrixTable.Location = new System.Drawing.Point(1, 2);
             this.matrixTable.Name = "matrixTable";
             this.matrixTable.RowCount = 0;
-            this.matrixTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.matrixTable.Size = new System.Drawing.Size(40, 27);
+            this.matrixTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.matrixTable.Size = new System.Drawing.Size(2, 2);
             this.matrixTable.TabIndex = 0;
             // 
             // MatrixForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(279, 133);
             this.Controls.Add(this.matrixTable);

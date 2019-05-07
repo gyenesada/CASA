@@ -187,7 +187,7 @@ namespace CASA
                 shortestPathBool[i] = false;
             }
 
-            if (startIndex == -1) throw new ArgumentException() ;
+            //if (startIndex == -1) { MessageBox.Show("Nem található start csúcs!"); return; }
             distances[startIndex] = 0;
 
             for(int count = 0; count < vertexNumber - 1; ++count)

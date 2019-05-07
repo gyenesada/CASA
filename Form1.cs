@@ -20,6 +20,7 @@ namespace CASA
         bool firstDijkstra = false;
         bool isCasaActive = false;
         List<Point> casaDefaultPath = new List<Point>();
+        List<List<Point>> arbPaths = new List<List<Point>>();
 
         Pen vertexPen = new Pen(Color.Black, 5);
         Pen edgePen = new Pen(Color.Blue, 3);
@@ -58,6 +59,11 @@ namespace CASA
         private void képernyőTörléseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graphics.Clear(Color.White);
+            deleteEdgeCasaCheckBox.Checked = false;
+            firstDijkstra = false;
+            edgeDeleteCheckBox.Checked = false;
+            needrefreshCASA = false;
+            needrefreshDijkstra = false;
             graph.deleteGraph();
             isCasaActive = false;
             shortestPathInfosLabel.Text = "";
@@ -117,6 +123,13 @@ namespace CASA
                             refreshLabel();
                             needrefreshDijkstra = false;
                         }
+                        if (needrefreshCASA)
+                        {
+                            runCasa();
+                            refreshGraphics();
+                            needrefreshCASA = false;
+                        }
+
                         vertexPufferToDraw.Clear();
                     }
                 }
@@ -207,14 +220,9 @@ namespace CASA
                     {
                         edgePen.Color = Color.Green;
                     }
-                    else
+                    else if (casaDefaultPath.Contains(firstPoint) && casaDefaultPath.Contains(secondPoint))
                     {
-                        edgePen.Color = Color.Black;
-                    }
-
-                    if (casaDefaultPath.Contains(firstPoint) && casaDefaultPath.Contains(secondPoint))
-                    {
-                        edgePen.Color = Color.Crimson;
+                        edgePen.Color = Color.BlueViolet;
                     }
                     else
                     {
@@ -245,7 +253,6 @@ namespace CASA
                     }
                     graphics.DrawLine(edgePen, vertexToDraw[e.X], vertexToDraw[e.Y]);
                 }
-                edgePen.Color = Color.Black;
             }
             catch (Exception ex)
             {
@@ -280,12 +287,10 @@ namespace CASA
                 edgeDeleteCheckBox.Visible = false;
                 deleteEdgeCasaCheckBox.Visible = true;
                 squareOneCheckBox.Checked = false;
-                arbButton.Visible = true;
             }
             else
             {
                 deleteEdgeCasaCheckBox.Visible = false;
-                arbButton.Visible = false;
             }
         }
 
@@ -356,55 +361,10 @@ namespace CASA
             }
             else if (CasaCheckBox.Checked)
             {
-                    graph.printAllPaths(graph.startIndex, graph.destIndex);
-                    isCasaActive = true;
-                    refreshGraphics();
-
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < graph.arborescences.Count; i++)
-                    {
-                        sb.Append("T" + i + ": ");
-                        for (int j = 0; j < graph.arborescences[i].Count; j++)
-                        {
-                            sb.Append(graph.arborescences[i][j] + " ");
-                        }
-                        sb.Append("\n");
-                    }
-
-                    arborescenceLabel.Text = sb.ToString();
-                    isCasaActive = false;
-
-                //Meghatároz egy minimális súlyú utat, mint közvetlen út.
-                List<int> minPath = new List<int>();
-                casaDefaultPath.Clear();
-
-                int minLength = int.MaxValue;
-                foreach (var path in graph.arborescences)
-                {
-                    if(minLength > path.Count)
-                    {
-                        minLength = path.Count;
-                        minPath = path.ToArray().ToList();
-                    }
-                }
-
-                for(int i = 0; i<minPath.Count; i++)
-                {
-                    casaDefaultPath.Add(graph.Vertices[minPath[i]]);
-                }
-
-                List<Point> minPoints = new List<Point>();
-
-                for(int i = 0; i<minPath.Count - 1; i++)
-                {
-                    minPoints.Add(new Point(minPath[i], minPath[i + 1]));
-                }
-
-                //Kell egy List<List<Point>>, amibe bekerülnek az utak. (mind.) Amelyik allista tartalmazza 
-                //az enabledEdges elemeit, azt töröljük (?) 
-
-
-                refreshGraphics();
+                runCasa();
+                //Ha az arbPaths valamelyik eleme tartalmazza az enabled edge-ek közül valamelyiket, azt az utat nem nézzük
+                //Ha kitötöltünk egy élt, lefut a fenti^. A maradékok közül megnézzük a következőt. (ciklikusan). Az lesz az új casapath
+                //ezt fentebb kell.
             }
             else
             {
@@ -412,28 +372,123 @@ namespace CASA
             }
         }
 
-        private void arbButton_Click(object sender, EventArgs e)
+        private void runCasa()
         {
-            //if (CasaCheckBox.Checked)
-            //{
-            //    graph.printAllPaths(graph.startIndex, graph.destIndex);
-            //    isCasaActive = true;
-            //    refreshGraphics();
+            graph.printAllPaths(graph.startIndex, graph.destIndex);
+            isCasaActive = true;
+            refreshGraphics();
 
-            //    StringBuilder sb = new StringBuilder();
-            //    for (int i = 0; i < graph.arborescences.Count; i++)
-            //    {
-            //        sb.Append("T" + i + ": ");
-            //        for (int j = 0; j < graph.arborescences[i].Count; j++)
-            //        {
-            //            sb.Append(graph.arborescences[i][j] + " ");
-            //        }
-            //        sb.Append("\n");
-            //    }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < graph.arborescences.Count; i++)
+            {
+                sb.Append("T" + i + ": ");
+                for (int j = 0; j < graph.arborescences[i].Count; j++)
+                {
+                    sb.Append(graph.arborescences[i][j] + " ");
+                }
+                sb.Append("\n");
+            }
 
-            //    arborescenceLabel.Text = sb.ToString();
-            //    isCasaActive = false;
-            //}
+            arborescenceLabel.Text = sb.ToString();
+            isCasaActive = false;
+
+            //Meghatároz egy minimális súlyú utat, mint közvetlen út.
+            List<int> minPath = new List<int>();
+            
+                casaDefaultPath.Clear();
+
+                int minLength = int.MaxValue;
+                foreach (var path in graph.arborescences)
+                {
+                    if (minLength > path.Count)
+                    {
+                        minLength = path.Count;
+                        minPath = path.ToArray().ToList();
+                    }
+                }
+
+                for (int i = 0; i < minPath.Count; i++)
+                {
+                    casaDefaultPath.Add(graph.Vertices[minPath[i]]);
+                }
+            
+
+                UpperTriangleMatrix edgeMatrix = graph.getConnections();
+                List<Point> edgesToDraw = edgeMatrix.getValues();
+                List<Point> enabledEdges = edgeMatrix.getEnabledValues();
+
+                List<Point> minPoints = new List<Point>();
+
+                for (int i = 0; i < minPath.Count - 1; i++)
+                {
+                    minPoints.Add(new Point(minPath[i], minPath[i + 1]));
+                }
+
+                for (int i = 0; i < enabledEdges.Count; i++)
+                {
+                    if (minPoints.Contains(enabledEdges[i]))
+                    {
+                        findNextArb(enabledEdges);
+                    }
+                }
+            
+            refreshGraphics();
+        }
+
+        public void findNextArb(List<Point> enabledEdges)
+        {
+            //összes arborescence a start és a destination között.
+            arbPaths = new List<List<Point>>();
+            List<Point> newPath = new List<Point>();
+
+            for (int i = 0; i < graph.arborescences.Count; i++)
+            {
+                arbPaths.Add(new List<Point>());
+                for (int j = 0; j < graph.arborescences[i].Count - 1; j++)
+                {
+                    arbPaths[i].Add(new Point(graph.arborescences[i][j], graph.arborescences[i][j + 1]));
+                }
+            }
+
+            newPath = defineNewRoute(enabledEdges);
+            if (newPath.Count == 0) return;
+
+            List<int> newPathIndeces = new List<int>();
+
+            newPathIndeces.Add(newPath.First().X);
+            for(int i = 1; i < newPath.Count; i++)
+            {
+                newPathIndeces.Add(newPath.ElementAt(i).X);
+            }
+            newPathIndeces.Add(newPath.Last().Y);
+
+            casaDefaultPath.Clear();
+            for(int i = 0; i < newPathIndeces.Count; i++)
+            {
+                casaDefaultPath.Add(graph.getVertices()[newPathIndeces[i]]);
+            }
+
+        }
+
+        private  List<Point> defineNewRoute( List<Point> enabledEdges)
+        {
+            List<Point> newPath = new List<Point>();
+            foreach (var enabled in enabledEdges)
+            {
+                for (int i = 0; i < arbPaths.Count; i++)
+                {
+                    if (!arbPaths[i].Contains(enabled))
+                    {
+                        newPath = arbPaths[i].ToArray().ToList();
+                    }
+                    else
+                    {
+                        arbPaths.Remove(arbPaths[i]);
+                    }
+                }
+            }
+
+            return newPath;
         }
 
         private void mátrixMegjelenítésToolStripMenuItem_Click(object sender, EventArgs e)
@@ -492,6 +547,10 @@ namespace CASA
         {
             graph.startIndex = -1;
             graph.destIndex = -1;
+            startCheckBox.Enabled = true;
+            destCheckBox.Enabled = true;
+            squareOneCheckBox.Checked = false;
+            CasaCheckBox.Checked = false;
             cleanGraph();
         }
 

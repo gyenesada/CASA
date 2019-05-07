@@ -259,7 +259,6 @@
             this.arbButton.Text = "Arb. meghatározás";
             this.arbButton.UseVisualStyleBackColor = true;
             this.arbButton.Visible = false;
-            this.arbButton.Click += new System.EventHandler(this.arbButton_Click);
             // 
             // arborescenceLabel
             // 

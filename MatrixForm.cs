@@ -36,10 +36,14 @@ namespace CASA
                     foreach(var v in Matrix[i, j])
                     {
                         sb.Append(String.Join("-", v));
-                        sb.Append("; ");
+                        sb.Append("\n");
                     }
-                    
-                    matrixTable.Controls.Add(new Label() { Text = sb.ToString() }, i, j);
+
+                    Label lab = new Label();
+                    lab.AutoSize = true;
+                    lab.Text = sb.ToString();
+
+                    matrixTable.Controls.Add(lab, i, j);
                 }
             }
         }
