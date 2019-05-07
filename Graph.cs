@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
@@ -20,7 +19,6 @@ namespace CASA
         public int[] path;
         public List<int>[] adjList; //szomszédsági lista
         public List<List<int>> arborescences = new List<List<int>>();
-
 
         public int startIndex = -1;
         public int destIndex = -1;
@@ -167,7 +165,6 @@ namespace CASA
                 utMatrix[v] = 1;
             }
         }
-
 
         #region Dijkstra
 

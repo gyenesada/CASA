@@ -48,13 +48,11 @@
             this.destCheckBox = new System.Windows.Forms.CheckBox();
             this.edgeDeleteCheckBox = new System.Windows.Forms.CheckBox();
             this.shortestPathInfosLabel = new System.Windows.Forms.Label();
-            this.arbButton = new System.Windows.Forms.Button();
             this.arborescenceLabel = new System.Windows.Forms.Label();
             this.deleteEdgeCasaCheckBox = new System.Windows.Forms.CheckBox();
-            this.performanceCounter1 = new System.Diagnostics.PerformanceCounter();
+            this.kozvetlenUtButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.menuSav.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.performanceCounter1)).BeginInit();
             this.SuspendLayout();
             // 
             // canvas
@@ -250,16 +248,6 @@
             this.shortestPathInfosLabel.Size = new System.Drawing.Size(0, 13);
             this.shortestPathInfosLabel.TabIndex = 17;
             // 
-            // arbButton
-            // 
-            this.arbButton.Location = new System.Drawing.Point(710, 148);
-            this.arbButton.Name = "arbButton";
-            this.arbButton.Size = new System.Drawing.Size(107, 21);
-            this.arbButton.TabIndex = 18;
-            this.arbButton.Text = "Arb. meghatározás";
-            this.arbButton.UseVisualStyleBackColor = true;
-            this.arbButton.Visible = false;
-            // 
             // arborescenceLabel
             // 
             this.arborescenceLabel.AutoSize = true;
@@ -281,14 +269,25 @@
             this.deleteEdgeCasaCheckBox.Visible = false;
             this.deleteEdgeCasaCheckBox.CheckedChanged += new System.EventHandler(this.deleteEdgeCasaCheckBox_CheckedChanged);
             // 
+            // kozvetlenUtButton
+            // 
+            this.kozvetlenUtButton.Location = new System.Drawing.Point(710, 145);
+            this.kozvetlenUtButton.Name = "kozvetlenUtButton";
+            this.kozvetlenUtButton.Size = new System.Drawing.Size(75, 23);
+            this.kozvetlenUtButton.TabIndex = 21;
+            this.kozvetlenUtButton.Text = "Közvetlen út";
+            this.kozvetlenUtButton.UseVisualStyleBackColor = true;
+            this.kozvetlenUtButton.Visible = false;
+            this.kozvetlenUtButton.Click += new System.EventHandler(this.kozvetlenUtButton_Click);
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(858, 515);
+            this.Controls.Add(this.kozvetlenUtButton);
             this.Controls.Add(this.deleteEdgeCasaCheckBox);
             this.Controls.Add(this.arborescenceLabel);
-            this.Controls.Add(this.arbButton);
             this.Controls.Add(this.shortestPathInfosLabel);
             this.Controls.Add(this.edgeDeleteCheckBox);
             this.Controls.Add(this.destCheckBox);
@@ -336,10 +335,9 @@
         private System.Windows.Forms.CheckBox edgeDeleteCheckBox;
         private System.Windows.Forms.ToolStripMenuItem gráfTisztázásaToolStripMenuItem;
         private System.Windows.Forms.Label shortestPathInfosLabel;
-        private System.Windows.Forms.Button arbButton;
         private System.Windows.Forms.Label arborescenceLabel;
         private System.Windows.Forms.CheckBox deleteEdgeCasaCheckBox;
-        private System.Diagnostics.PerformanceCounter performanceCounter1;
+        private System.Windows.Forms.Button kozvetlenUtButton;
     }
 }
 

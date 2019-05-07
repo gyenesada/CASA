@@ -19,6 +19,8 @@ namespace CASA
         bool needrefreshCASA = false;
         bool firstDijkstra = false;
         bool isCasaActive = false;
+        List<int> minPath = new List<int>();
+        List<Point> minPoints = new List<Point>();
         List<Point> casaDefaultPath = new List<Point>();
         List<List<Point>> arbPaths = new List<List<Point>>();
 
@@ -65,6 +67,8 @@ namespace CASA
             needrefreshCASA = false;
             needrefreshDijkstra = false;
             graph.deleteGraph();
+            minPath.Clear();
+            casaDefaultPath.Clear();
             isCasaActive = false;
             shortestPathInfosLabel.Text = "";
             arborescenceLabel.Text = "";
@@ -216,20 +220,20 @@ namespace CASA
                     Point firstPoint = vertexToDraw[e.X];
                     Point secondPoint = vertexToDraw[e.Y];
 
-                    if (graph.shortestPathToColor.Contains(firstPoint) && graph.shortestPathToColor.Contains(secondPoint))
-                    {
-                        edgePen.Color = Color.Green;
-                    }
-                    else if (casaDefaultPath.Contains(firstPoint) && casaDefaultPath.Contains(secondPoint))
+                    graphics.DrawLine(edgePen, firstPoint, secondPoint);
+
+                    for (int i = 0; i < casaDefaultPath.Count-1; i++)
                     {
                         edgePen.Color = Color.BlueViolet;
-                    }
-                    else
-                    {
-                        edgePen.Color = Color.Black;
+                        graphics.DrawLine(edgePen, casaDefaultPath[i], casaDefaultPath[i + 1]); 
                     }
 
-                    graphics.DrawLine(edgePen, firstPoint, secondPoint);
+                    for(int i = 0; i<graph.shortestPathToColor.Count-1; i++)
+                    {
+                        edgePen.Color = Color.Green;
+                        graphics.DrawLine(edgePen, graph.shortestPathToColor[i], graph.shortestPathToColor[i + 1]);
+                    }
+                    edgePen.Color = Color.Black;
 
                     if (firstDijkstra)
                     {
@@ -253,6 +257,7 @@ namespace CASA
                     }
                     graphics.DrawLine(edgePen, vertexToDraw[e.X], vertexToDraw[e.Y]);
                 }
+                edgePen.Color = Color.Black;
             }
             catch (Exception ex)
             {
@@ -287,10 +292,12 @@ namespace CASA
                 edgeDeleteCheckBox.Visible = false;
                 deleteEdgeCasaCheckBox.Visible = true;
                 squareOneCheckBox.Checked = false;
+                kozvetlenUtButton.Visible = true;
             }
             else
             {
                 deleteEdgeCasaCheckBox.Visible = false;
+                kozvetlenUtButton.Visible = false;
             }
         }
 
@@ -372,7 +379,7 @@ namespace CASA
             }
         }
 
-        private void runCasa()
+        private void minPathMeghatarozas()
         {
             graph.printAllPaths(graph.startIndex, graph.destIndex);
             isCasaActive = true;
@@ -393,49 +400,52 @@ namespace CASA
             isCasaActive = false;
 
             //Meghatároz egy minimális súlyú utat, mint közvetlen út.
-            List<int> minPath = new List<int>();
+            minPath.Clear();
+
+            casaDefaultPath.Clear();
+
+            int minLength = int.MaxValue;
+            foreach (var path in graph.arborescences)
+            {
+                if (minLength > path.Count)
+                {
+                    minLength = path.Count;
+                    minPath = path.ToArray().ToList();
+                }
+            }
+
+            for (int i = 0; i < minPath.Count; i++)
+            {
+                casaDefaultPath.Add(graph.Vertices[minPath[i]]);
+            }
+
+            for (int i = 0; i < minPath.Count - 1; i++)
+            {
+                minPoints.Add(new Point(minPath[i], minPath[i + 1]));
+            }
+
+            refreshGraphics();
+        }
+
+        private void runCasa()
+        {
+            UpperTriangleMatrix edgeMatrix = graph.getConnections();
+            List<Point> edgesToDraw = edgeMatrix.getValues();
+            List<Point> enabledEdges = edgeMatrix.getEnabledValues();
             
-                casaDefaultPath.Clear();
 
-                int minLength = int.MaxValue;
-                foreach (var path in graph.arborescences)
+            for (int i = 0; i < enabledEdges.Count; i++)
+            {
+                if (minPoints.Contains(enabledEdges[i]))
                 {
-                    if (minLength > path.Count)
-                    {
-                        minLength = path.Count;
-                        minPath = path.ToArray().ToList();
-                    }
+                    findNextArb(enabledEdges, minPoints);
                 }
-
-                for (int i = 0; i < minPath.Count; i++)
-                {
-                    casaDefaultPath.Add(graph.Vertices[minPath[i]]);
-                }
-            
-
-                UpperTriangleMatrix edgeMatrix = graph.getConnections();
-                List<Point> edgesToDraw = edgeMatrix.getValues();
-                List<Point> enabledEdges = edgeMatrix.getEnabledValues();
-
-                List<Point> minPoints = new List<Point>();
-
-                for (int i = 0; i < minPath.Count - 1; i++)
-                {
-                    minPoints.Add(new Point(minPath[i], minPath[i + 1]));
-                }
-
-                for (int i = 0; i < enabledEdges.Count; i++)
-                {
-                    if (minPoints.Contains(enabledEdges[i]))
-                    {
-                        findNextArb(enabledEdges);
-                    }
-                }
+            }
             
             refreshGraphics();
         }
 
-        public void findNextArb(List<Point> enabledEdges)
+        public void findNextArb(List<Point> enabledEdges, List<Point> minPoints)
         {
             //összes arborescence a start és a destination között.
             arbPaths = new List<List<Point>>();
@@ -450,7 +460,18 @@ namespace CASA
                 }
             }
 
-            newPath = defineNewRoute(enabledEdges);
+            int index = 0;
+            //megkeresem a minPoints indexét az arbPaths-ben. S oly jó lenne, ha működne.
+            for(int i = 0; i<arbPaths.Count; i++)
+            {
+                if (arbPaths[i].All(minPoints.Contains) )
+                {
+                    index = i;
+                }
+            }
+            
+
+            newPath = defineNewRoute(enabledEdges, index);
             if (newPath.Count == 0) return;
 
             List<int> newPathIndeces = new List<int>();
@@ -462,6 +483,14 @@ namespace CASA
             }
             newPathIndeces.Add(newPath.Last().Y);
 
+
+            minPoints.Clear();
+            for (int i = 0; i < newPathIndeces.Count - 1; i++)
+            {
+                minPoints.Add(new Point(newPathIndeces[i], newPathIndeces[i + 1]));
+            }
+
+
             casaDefaultPath.Clear();
             for(int i = 0; i < newPathIndeces.Count; i++)
             {
@@ -470,20 +499,48 @@ namespace CASA
 
         }
 
-        private  List<Point> defineNewRoute( List<Point> enabledEdges)
+        private  List<Point> defineNewRoute( List<Point> enabledEdges, int index)
         {
             List<Point> newPath = new List<Point>();
-            foreach (var enabled in enabledEdges)
+
+            List<List<Point>> newRoutes = new List<List<Point>>();
+            bool tartalmazza = false;
+
+            //onnan indítjuk, ami az előző út indexe után van 0 helyett
+            for(int i = index + 1; i<arbPaths.Count; i++)
             {
-                for (int i = 0; i < arbPaths.Count; i++)
+                foreach(var enabled in enabledEdges)
                 {
-                    if (!arbPaths[i].Contains(enabled))
+                    if (arbPaths[i].Contains(enabled))
+                    {
+                        tartalmazza = true;
+                    }
+                }
+
+                if (!tartalmazza)
+                {
+                    newPath = arbPaths[i].ToArray().ToList();
+                }
+            }
+
+            if(newPath.Count == 0)
+            {
+                tartalmazza = false;
+                //tehát nem talált semmit a lista végéről, akkor lefuttatjuk az index-1ig megint.
+                for (int i = 0; i < index-1; i++)
+                {
+                    foreach (var enabled in enabledEdges)
+                    {
+                        if (arbPaths[i].Contains(enabled))
+                        {
+                            tartalmazza = true;
+                        }
+                    }
+
+                    if (!tartalmazza)
                     {
                         newPath = arbPaths[i].ToArray().ToList();
-                    }
-                    else
-                    {
-                        arbPaths.Remove(arbPaths[i]);
+                        return newPath;
                     }
                 }
             }
@@ -547,6 +604,9 @@ namespace CASA
         {
             graph.startIndex = -1;
             graph.destIndex = -1;
+            casaDefaultPath.Clear();
+            minPath.Clear();
+            isCasaActive = false;
             startCheckBox.Enabled = true;
             destCheckBox.Enabled = true;
             squareOneCheckBox.Checked = false;
@@ -559,14 +619,7 @@ namespace CASA
             graphics.Clear(Color.White);
             graph.clearDeletedEdges();
             graph.shortestPathToColor = new List<Point>();
-            if (squareOneCheckBox.Checked)
-            {
-                isCasaActive = false;
-            }
-            else
-            {
-                isCasaActive = true;
-            }
+
             needrefreshDijkstra = false;
             needrefreshCASA = false;
             firstDijkstra = false;
@@ -625,6 +678,11 @@ namespace CASA
 
             DrawArrowhead(p2, vx, vy);
 
+        }
+
+        private void kozvetlenUtButton_Click(object sender, EventArgs e)
+        {
+            minPathMeghatarozas();
         }
     }
 }
