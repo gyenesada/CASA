@@ -213,7 +213,7 @@ namespace CASA
                     pathIndex.Add(index);
                 }
                 
-                Console.WriteLine(shortestPathToDestination.ToString());
+                //Console.WriteLine(shortestPathToDestination.ToString());
 
                 for (int i = 0; i <= pathIndex.Count - 2; i++)
                 {

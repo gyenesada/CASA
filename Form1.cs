@@ -208,7 +208,7 @@ namespace CASA
                     for (int j = 0; j < graph.adjList[i].Count; j++)
                     {
                         Point secondPoint = graph.Vertices[graph.adjList[i][j]];
-                        Console.WriteLine(i + "-től fut él " + graph.adjList[i][j] + "-be");
+                        //Console.WriteLine(i + "-től fut él " + graph.adjList[i][j] + "-be");
                         DrawArrow(firstPoint, secondPoint);
                     }
                 }
@@ -230,7 +230,7 @@ namespace CASA
 
                     for(int i = 0; i<graph.shortestPathToColor.Count-1; i++)
                     {
-                        edgePen.Color = Color.Green;
+                        edgePen.Color = Color.Orange;
                         graphics.DrawLine(edgePen, graph.shortestPathToColor[i], graph.shortestPathToColor[i + 1]);
                     }
                     edgePen.Color = Color.Black;
@@ -629,7 +629,8 @@ namespace CASA
             graphics.Clear(Color.White);
             graph.clearDeletedEdges();
             graph.shortestPathToColor = new List<Point>();
-
+            deleteEdgeCasaCheckBox.Checked = false;
+            edgeDeleteCheckBox.Checked = false;
             needrefreshDijkstra = false;
             needrefreshCASA = false;
             firstDijkstra = false;
