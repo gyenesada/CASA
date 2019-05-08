@@ -38,8 +38,8 @@
             this.képernyőTörléseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gráfTisztázásaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gráfBetöltéseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.kilépésToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.mátrixMegjelenítésToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kilépésToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleTextBox = new System.Windows.Forms.TextBox();
             this.addGraphConsoleLabel = new System.Windows.Forms.Label();
             this.loadButton = new System.Windows.Forms.Button();
@@ -51,6 +51,7 @@
             this.arborescenceLabel = new System.Windows.Forms.Label();
             this.deleteEdgeCasaCheckBox = new System.Windows.Forms.CheckBox();
             this.kozvetlenUtButton = new System.Windows.Forms.Button();
+            this.arbmeghatButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.menuSav.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +62,7 @@
             this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.canvas.Location = new System.Drawing.Point(0, 27);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(689, 390);
+            this.canvas.Size = new System.Drawing.Size(896, 507);
             this.canvas.TabIndex = 0;
             this.canvas.TabStop = false;
             this.canvas.Click += new System.EventHandler(this.canvas_Click);
@@ -71,7 +72,7 @@
             // 
             this.algorithmType.AutoSize = true;
             this.algorithmType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.algorithmType.Location = new System.Drawing.Point(707, 53);
+            this.algorithmType.Location = new System.Drawing.Point(902, 27);
             this.algorithmType.Name = "algorithmType";
             this.algorithmType.Size = new System.Drawing.Size(78, 17);
             this.algorithmType.TabIndex = 1;
@@ -80,7 +81,7 @@
             // squareOneCheckBox
             // 
             this.squareOneCheckBox.AutoSize = true;
-            this.squareOneCheckBox.Location = new System.Drawing.Point(710, 88);
+            this.squareOneCheckBox.Location = new System.Drawing.Point(914, 65);
             this.squareOneCheckBox.Name = "squareOneCheckBox";
             this.squareOneCheckBox.Size = new System.Drawing.Size(80, 17);
             this.squareOneCheckBox.TabIndex = 2;
@@ -91,7 +92,7 @@
             // CasaCheckBox
             // 
             this.CasaCheckBox.AutoSize = true;
-            this.CasaCheckBox.Location = new System.Drawing.Point(710, 111);
+            this.CasaCheckBox.Location = new System.Drawing.Point(914, 88);
             this.CasaCheckBox.Name = "CasaCheckBox";
             this.CasaCheckBox.Size = new System.Drawing.Size(54, 17);
             this.CasaCheckBox.TabIndex = 3;
@@ -101,7 +102,7 @@
             // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(695, 394);
+            this.runButton.Location = new System.Drawing.Point(914, 511);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(75, 23);
             this.runButton.TabIndex = 7;
@@ -115,7 +116,7 @@
             this.fájlToolStripMenuItem});
             this.menuSav.Location = new System.Drawing.Point(0, 0);
             this.menuSav.Name = "menuSav";
-            this.menuSav.Size = new System.Drawing.Size(858, 24);
+            this.menuSav.Size = new System.Drawing.Size(1123, 24);
             this.menuSav.TabIndex = 8;
             this.menuSav.Text = "menuSav";
             // 
@@ -125,8 +126,8 @@
             this.képernyőTörléseToolStripMenuItem,
             this.gráfTisztázásaToolStripMenuItem,
             this.gráfBetöltéseToolStripMenuItem,
-            this.kilépésToolStripMenuItem1,
-            this.mátrixMegjelenítésToolStripMenuItem});
+            this.mátrixMegjelenítésToolStripMenuItem,
+            this.kilépésToolStripMenuItem1});
             this.fájlToolStripMenuItem.Name = "fájlToolStripMenuItem";
             this.fájlToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fájlToolStripMenuItem.Text = "Fájl";
@@ -153,13 +154,6 @@
             this.gráfBetöltéseToolStripMenuItem.Text = "Gráf betöltése fájlból";
             this.gráfBetöltéseToolStripMenuItem.Click += new System.EventHandler(this.gráfBetöltéseToolStripMenuItem_Click);
             // 
-            // kilépésToolStripMenuItem1
-            // 
-            this.kilépésToolStripMenuItem1.Name = "kilépésToolStripMenuItem1";
-            this.kilépésToolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
-            this.kilépésToolStripMenuItem1.Text = "Kilépés";
-            this.kilépésToolStripMenuItem1.Click += new System.EventHandler(this.kilépésToolStripMenuItem1_Click);
-            // 
             // mátrixMegjelenítésToolStripMenuItem
             // 
             this.mátrixMegjelenítésToolStripMenuItem.Name = "mátrixMegjelenítésToolStripMenuItem";
@@ -167,21 +161,29 @@
             this.mátrixMegjelenítésToolStripMenuItem.Text = "Mátrix megjelenítése";
             this.mátrixMegjelenítésToolStripMenuItem.Click += new System.EventHandler(this.mátrixMegjelenítésToolStripMenuItem_Click);
             // 
+            // kilépésToolStripMenuItem1
+            // 
+            this.kilépésToolStripMenuItem1.Name = "kilépésToolStripMenuItem1";
+            this.kilépésToolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
+            this.kilépésToolStripMenuItem1.Text = "Kilépés";
+            this.kilépésToolStripMenuItem1.Click += new System.EventHandler(this.kilépésToolStripMenuItem1_Click);
+            // 
             // consoleTextBox
             // 
             this.consoleTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.consoleTextBox.Location = new System.Drawing.Point(0, 469);
+            this.consoleTextBox.Enabled = false;
+            this.consoleTextBox.Location = new System.Drawing.Point(0, 598);
             this.consoleTextBox.Multiline = true;
             this.consoleTextBox.Name = "consoleTextBox";
             this.consoleTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.consoleTextBox.Size = new System.Drawing.Size(858, 46);
+            this.consoleTextBox.Size = new System.Drawing.Size(1123, 46);
             this.consoleTextBox.TabIndex = 9;
             // 
             // addGraphConsoleLabel
             // 
             this.addGraphConsoleLabel.AutoSize = true;
             this.addGraphConsoleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.addGraphConsoleLabel.Location = new System.Drawing.Point(-3, 439);
+            this.addGraphConsoleLabel.Location = new System.Drawing.Point(-3, 578);
             this.addGraphConsoleLabel.Name = "addGraphConsoleLabel";
             this.addGraphConsoleLabel.Size = new System.Drawing.Size(106, 17);
             this.addGraphConsoleLabel.TabIndex = 10;
@@ -189,7 +191,8 @@
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(771, 436);
+            this.loadButton.Enabled = false;
+            this.loadButton.Location = new System.Drawing.Point(1036, 540);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(75, 23);
             this.loadButton.TabIndex = 11;
@@ -200,7 +203,7 @@
             // pointLabel
             // 
             this.pointLabel.AutoSize = true;
-            this.pointLabel.Location = new System.Drawing.Point(12, 424);
+            this.pointLabel.Location = new System.Drawing.Point(12, 544);
             this.pointLabel.Name = "pointLabel";
             this.pointLabel.Size = new System.Drawing.Size(10, 13);
             this.pointLabel.TabIndex = 12;
@@ -209,7 +212,7 @@
             // startCheckBox
             // 
             this.startCheckBox.AutoSize = true;
-            this.startCheckBox.Location = new System.Drawing.Point(142, 423);
+            this.startCheckBox.Location = new System.Drawing.Point(151, 540);
             this.startCheckBox.Name = "startCheckBox";
             this.startCheckBox.Size = new System.Drawing.Size(48, 17);
             this.startCheckBox.TabIndex = 13;
@@ -220,7 +223,7 @@
             // destCheckBox
             // 
             this.destCheckBox.AutoSize = true;
-            this.destCheckBox.Location = new System.Drawing.Point(196, 423);
+            this.destCheckBox.Location = new System.Drawing.Point(236, 540);
             this.destCheckBox.Name = "destCheckBox";
             this.destCheckBox.Size = new System.Drawing.Size(79, 17);
             this.destCheckBox.TabIndex = 14;
@@ -231,7 +234,7 @@
             // edgeDeleteCheckBox
             // 
             this.edgeDeleteCheckBox.AutoSize = true;
-            this.edgeDeleteCheckBox.Location = new System.Drawing.Point(620, 424);
+            this.edgeDeleteCheckBox.Location = new System.Drawing.Point(790, 540);
             this.edgeDeleteCheckBox.Name = "edgeDeleteCheckBox";
             this.edgeDeleteCheckBox.Size = new System.Drawing.Size(69, 17);
             this.edgeDeleteCheckBox.TabIndex = 16;
@@ -243,15 +246,15 @@
             // shortestPathInfosLabel
             // 
             this.shortestPathInfosLabel.AutoSize = true;
-            this.shortestPathInfosLabel.Location = new System.Drawing.Point(701, 213);
+            this.shortestPathInfosLabel.Location = new System.Drawing.Point(911, 187);
             this.shortestPathInfosLabel.Name = "shortestPathInfosLabel";
-            this.shortestPathInfosLabel.Size = new System.Drawing.Size(0, 13);
+            this.shortestPathInfosLabel.Size = new System.Drawing.Size(99, 13);
             this.shortestPathInfosLabel.TabIndex = 17;
             // 
             // arborescenceLabel
             // 
             this.arborescenceLabel.AutoSize = true;
-            this.arborescenceLabel.Location = new System.Drawing.Point(696, 197);
+            this.arborescenceLabel.Location = new System.Drawing.Point(911, 161);
             this.arborescenceLabel.Name = "arborescenceLabel";
             this.arborescenceLabel.Size = new System.Drawing.Size(7, 13);
             this.arborescenceLabel.TabIndex = 19;
@@ -260,7 +263,7 @@
             // deleteEdgeCasaCheckBox
             // 
             this.deleteEdgeCasaCheckBox.AutoSize = true;
-            this.deleteEdgeCasaCheckBox.Location = new System.Drawing.Point(620, 424);
+            this.deleteEdgeCasaCheckBox.Location = new System.Drawing.Point(790, 540);
             this.deleteEdgeCasaCheckBox.Name = "deleteEdgeCasaCheckBox";
             this.deleteEdgeCasaCheckBox.Size = new System.Drawing.Size(106, 17);
             this.deleteEdgeCasaCheckBox.TabIndex = 20;
@@ -271,7 +274,7 @@
             // 
             // kozvetlenUtButton
             // 
-            this.kozvetlenUtButton.Location = new System.Drawing.Point(710, 145);
+            this.kozvetlenUtButton.Location = new System.Drawing.Point(914, 121);
             this.kozvetlenUtButton.Name = "kozvetlenUtButton";
             this.kozvetlenUtButton.Size = new System.Drawing.Size(75, 23);
             this.kozvetlenUtButton.TabIndex = 21;
@@ -280,11 +283,24 @@
             this.kozvetlenUtButton.Visible = false;
             this.kozvetlenUtButton.Click += new System.EventHandler(this.kozvetlenUtButton_Click);
             // 
+            // arbmeghatButton
+            // 
+            this.arbmeghatButton.Location = new System.Drawing.Point(1036, 121);
+            this.arbmeghatButton.Name = "arbmeghatButton";
+            this.arbmeghatButton.Size = new System.Drawing.Size(75, 23);
+            this.arbmeghatButton.TabIndex = 22;
+            this.arbmeghatButton.Text = "Arb.meghat.";
+            this.arbmeghatButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.arbmeghatButton.UseVisualStyleBackColor = true;
+            this.arbmeghatButton.Visible = false;
+            this.arbmeghatButton.Click += new System.EventHandler(this.arbmeghatButton_Click);
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 515);
+            this.ClientSize = new System.Drawing.Size(1123, 644);
+            this.Controls.Add(this.arbmeghatButton);
             this.Controls.Add(this.kozvetlenUtButton);
             this.Controls.Add(this.deleteEdgeCasaCheckBox);
             this.Controls.Add(this.arborescenceLabel);
@@ -338,6 +354,7 @@
         private System.Windows.Forms.Label arborescenceLabel;
         private System.Windows.Forms.CheckBox deleteEdgeCasaCheckBox;
         private System.Windows.Forms.Button kozvetlenUtButton;
+        private System.Windows.Forms.Button arbmeghatButton;
     }
 }
 

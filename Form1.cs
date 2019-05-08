@@ -293,11 +293,13 @@ namespace CASA
                 deleteEdgeCasaCheckBox.Visible = true;
                 squareOneCheckBox.Checked = false;
                 kozvetlenUtButton.Visible = true;
+                arbmeghatButton.Visible = true;
             }
             else
             {
                 deleteEdgeCasaCheckBox.Visible = false;
                 kozvetlenUtButton.Visible = false;
+                arbmeghatButton.Visible = false;
             }
         }
 
@@ -369,9 +371,6 @@ namespace CASA
             else if (CasaCheckBox.Checked)
             {
                 runCasa();
-                //Ha az arbPaths valamelyik eleme tartalmazza az enabled edge-ek közül valamelyiket, azt az utat nem nézzük
-                //Ha kitötöltünk egy élt, lefut a fenti^. A maradékok közül megnézzük a következőt. (ciklikusan). Az lesz az új casapath
-                //ezt fentebb kell.
             }
             else
             {
@@ -418,7 +417,7 @@ namespace CASA
             {
                 casaDefaultPath.Add(graph.Vertices[minPath[i]]);
             }
-
+            minPoints.Clear();
             for (int i = 0; i < minPath.Count - 1; i++)
             {
                 minPoints.Add(new Point(minPath[i], minPath[i + 1]));
@@ -436,7 +435,7 @@ namespace CASA
 
             for (int i = 0; i < enabledEdges.Count; i++)
             {
-                if (minPoints.Contains(enabledEdges[i]))
+                if (minPoints.Contains(new Point(enabledEdges[i].X, enabledEdges[i].Y)) || minPoints.Contains(new Point(enabledEdges[i].Y, enabledEdges[i].X)))
                 {
                     findNextArb(enabledEdges, minPoints);
                 }
@@ -469,10 +468,15 @@ namespace CASA
                     index = i;
                 }
             }
-            
 
+            newPath.Clear();
             newPath = defineNewRoute(enabledEdges, index);
-            if (newPath.Count == 0) return;
+            if (newPath.Count == 0)
+            {
+                casaDefaultPath.Clear();
+                refreshGraphics();
+                return;
+            }
 
             List<int> newPathIndeces = new List<int>();
 
@@ -509,6 +513,7 @@ namespace CASA
             //onnan indítjuk, ami az előző út indexe után van 0 helyett
             for(int i = index + 1; i<arbPaths.Count; i++)
             {
+                tartalmazza = false;
                 foreach(var enabled in enabledEdges)
                 {
                     if (arbPaths[i].Contains(enabled))
@@ -520,6 +525,10 @@ namespace CASA
                 if (!tartalmazza)
                 {
                     newPath = arbPaths[i].ToArray().ToList();
+                    if (newPath.Count != 0)
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -529,6 +538,7 @@ namespace CASA
                 //tehát nem talált semmit a lista végéről, akkor lefuttatjuk az index-1ig megint.
                 for (int i = 0; i < index-1; i++)
                 {
+                    tartalmazza = false;
                     foreach (var enabled in enabledEdges)
                     {
                         if (arbPaths[i].Contains(enabled))
@@ -631,22 +641,11 @@ namespace CASA
         private void refreshLabel()
         {
             StringBuilder sb = new StringBuilder();
-            //kell?
+
             sb.Append("vertex \t distance \t last vertex\n");
             for (int i = 0; i < graph.Vertices.Count; ++i)
             {
-                if (graph.distances[i] == int.MaxValue)
-                {
-                    sb.Append(i + "   \t          -         \t   " + graph.path[i] + "\n");
-                }
-                if (graph.path[i] == -1)
-                {
-                    sb.Append(i + "   \t         " + graph.distances[i] + "         \t   \n");
-                }
-                else
-                {
-                    sb.Append(i + "   \t         " + graph.distances[i] + "         \t   " + graph.path[i] + "\n");
-                }
+                sb.Append(i + "   \t         " + graph.distances[i] + "         \t   " + graph.path[i] + "\n");
             }
             shortestPathInfosLabel.Text = sb.ToString();
         }
@@ -684,5 +683,32 @@ namespace CASA
         {
             minPathMeghatarozas();
         }
+
+        private void arbmeghatButton_Click(object sender, EventArgs e)
+        {
+           
+            if (CasaCheckBox.Checked) if (CasaCheckBox.Checked)
+                {
+                    {
+                        graph.printAllPaths(graph.startIndex, graph.destIndex); graph.printAllPaths(graph.startIndex, graph.destIndex);
+                        isCasaActive = true; isCasaActive = true;
+                        refreshGraphics(); refreshGraphics();
+
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < graph.arborescences.Count; i++)
+                        {
+                            sb.Append("T" + i + ": ");
+                            for (int j = 0; j < graph.arborescences[i].Count; j++)
+                            {
+                                sb.Append(graph.arborescences[i][j] + " ");
+                            }
+                            sb.Append("\n");
+                        }
+
+                        arborescenceLabel.Text = sb.ToString();
+                    }
+                }
+        }
+        
     }
 }

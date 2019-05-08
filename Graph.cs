@@ -223,7 +223,7 @@ namespace CASA
             }
             catch (IndexOutOfRangeException ex)
             {
-                MessageBox.Show("Nem található közvetlen út!");
+                
             }
 
         }
